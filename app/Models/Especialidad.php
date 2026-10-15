@@ -14,5 +14,4 @@ class Especialidad extends Model
     {
         return $this->hasMany(Medico::class);
     }
-    
 }

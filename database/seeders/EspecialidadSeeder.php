@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Especialidad;
+use Illuminate\Database\Seeder;
 
 class EspecialidadSeeder extends Seeder
 {
@@ -14,7 +13,7 @@ class EspecialidadSeeder extends Seeder
     public function run(): void
     {
         foreach (['Medicina General', 'Pediatría', 'Ginecología', 'Cardiología'] as $nombre) {
-        Especialidad::firstOrCreate(['nombre' => $nombre]);
+            Especialidad::firstOrCreate(['nombre' => $nombre]);
         }
     }
 }

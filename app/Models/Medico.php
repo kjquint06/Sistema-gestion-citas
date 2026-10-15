@@ -22,6 +22,7 @@ class Medico extends Model
     {
         return $this->hasMany(Cita::class);
     }
+
     public function horarios()
     {
         return $this->hasMany(Horario::class);
