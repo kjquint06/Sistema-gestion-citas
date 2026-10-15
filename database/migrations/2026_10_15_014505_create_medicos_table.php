@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('medicos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('usuario_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('especialidad_id')->constrained('especialidades');
+            $table->string('numero_colegiado')->unique();
+            $table->unsignedSmallInteger('duracion_cita')->default(45);
             $table->timestamps();
         });
     }

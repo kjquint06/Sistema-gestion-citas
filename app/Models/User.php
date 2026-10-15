@@ -52,4 +52,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return in_array($this->rol, $roles, true);
     }
+
+    public function medico()
+    {
+        return $this->hasOne(Medico::class, 'usuario_id');
+    }
+
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class, 'usuario_id');
+    }
 }
