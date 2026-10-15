@@ -32,5 +32,7 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+
+        $this->call(PacienteSeeder::class);
     }
 }
