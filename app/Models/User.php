@@ -30,9 +30,13 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
     public const ROL_PACIENTE = 'paciente';
+
     public const ROL_MEDICO = 'medico';
+
     public const ROL_RECEPCIONISTA = 'recepcionista';
+
     public const ROL_ADMIN = 'admin';
 
     /**
