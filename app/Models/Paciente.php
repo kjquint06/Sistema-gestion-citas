@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Paciente extends Model
 {
@@ -21,12 +23,18 @@ class Paciente extends Model
         ];
     }
 
-    public function usuario()
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function usuario(): BelongsTo
     {
         return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function alergias()
+    /**
+     * @return HasMany<Alergia, $this>
+     */
+    public function alergias(): HasMany
     {
         return $this->hasMany(Alergia::class);
     }
