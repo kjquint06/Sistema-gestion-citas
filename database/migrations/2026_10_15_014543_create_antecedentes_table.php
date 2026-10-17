@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('antecedentes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('paciente_id')->constrained('pacientes')->cascadeOnDelete();
+            $table->string('tipo', 50);
+            $table->text('descripcion');
+            $table->date('fecha')->nullable();
             $table->timestamps();
         });
     }
