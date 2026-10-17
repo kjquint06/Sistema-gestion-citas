@@ -6,5 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Antecedente extends Model
 {
-    //
+    protected $table = 'antecedentes';
+
+    protected $fillable = [
+        'paciente_id',
+        'tipo',
+        'descripcion',
+        'fecha',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'fecha' => 'date',
+        ];
+    }
+
+    /**
+     * @return BelongsTo<Paciente, $this>
+     */
+    public function paciente(): BelongsTo
+    {
+        return $this->belongsTo(Paciente::class);
+    } //
 }

@@ -33,6 +33,10 @@ class DatabaseSeeder extends Seeder
             );
         }
 
-        $this->call(PacienteSeeder::class);
+        $this->call([
+            EspecialidadSeeder::class,
+            PacienteSeeder::class,
+            AntecedenteSeeder::class,
+        ]);
     }
 }
