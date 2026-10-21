@@ -38,4 +38,12 @@ class Paciente extends Model
     {
         return $this->hasMany(Alergia::class);
     }
+
+    /**
+     * @return HasMany<Cita, $this>
+     */
+    public function citas(): HasMany
+    {
+        return $this->hasMany(Cita::class);
+    }
 }

@@ -41,4 +41,5 @@ class Medico extends Model
     {
         return $this->hasMany(Horario::class);
     }
+    
 }
