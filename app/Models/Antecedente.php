@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Antecedente extends Model
 {
+    /** @use HasFactory<Factory<Antecedente>> */
+    use HasFactory;
+
     protected $table = 'antecedentes';
 
     protected $fillable = [

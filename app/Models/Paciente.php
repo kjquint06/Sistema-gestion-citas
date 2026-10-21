@@ -40,6 +40,14 @@ class Paciente extends Model
     }
 
     /**
+     * @return HasMany<Cita, $this>
+     */
+    public function citas(): HasMany
+    {
+        return $this->hasMany(Cita::class);
+    }
+
+    /**
      * @return HasMany<Antecedente, $this>
      */
     public function antecedentes(): HasMany
