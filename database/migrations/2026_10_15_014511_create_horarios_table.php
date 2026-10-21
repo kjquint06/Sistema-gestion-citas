@@ -6,20 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('medico_id')->constrained('medicos')->cascadeOnDelete();
+            // 1 = lunes ... 7 = domingo (formato ISO)
+            $table->unsignedTinyInteger('dia_semana');
+            $table->time('hora_inicio');
+            $table->time('hora_fin');
             $table->timestamps();
+
+            $table->index(['medico_id', 'dia_semana']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('horarios');
