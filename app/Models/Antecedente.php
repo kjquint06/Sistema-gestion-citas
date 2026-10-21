@@ -28,7 +28,9 @@ class Antecedente extends Model
         ];
     }
 
-    /** @return BelongsTo<Paciente, $this> */
+    /**
+     * @return BelongsTo<Paciente, $this>
+     */
     public function paciente(): BelongsTo
     {
         return $this->belongsTo(Paciente::class);
