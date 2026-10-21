@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Cita extends Model
 {
+    /** @use HasFactory<Factory<Cita>> */
     use HasFactory;
 
     public const ESTADO_PENDIENTE = 'pendiente';
@@ -40,16 +42,19 @@ class Cita extends Model
         ];
     }
 
+    /** @return BelongsTo<Paciente, $this> */
     public function paciente(): BelongsTo
     {
         return $this->belongsTo(Paciente::class);
     }
 
+    /** @return BelongsTo<Medico, $this> */
     public function medico(): BelongsTo
     {
         return $this->belongsTo(Medico::class);
     }
 
+    /** @return HasOne<Consulta, $this> */
     public function consulta(): HasOne
     {
         return $this->hasOne(Consulta::class);

@@ -17,7 +17,7 @@ class HorarioCitaSeeder extends Seeder
         $pacientes = Paciente::all();
 
         if ($medicos->isEmpty() || $pacientes->isEmpty()) {
-            $this->command?->warn('Faltan médicos o pacientes: ejecuta primero sus seeders.');
+            $this->command->warn('Faltan médicos o pacientes: ejecuta primero sus seeders.');
 
             return;
         }

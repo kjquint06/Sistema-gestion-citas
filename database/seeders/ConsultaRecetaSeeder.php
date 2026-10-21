@@ -13,7 +13,7 @@ class ConsultaRecetaSeeder extends Seeder
         $citas = Cita::where('estado', Cita::ESTADO_ATENDIDA)->get();
 
         if ($citas->isEmpty()) {
-            $this->command?->warn('No hay citas atendidas: ejecuta primero HorarioCitaSeeder.');
+            $this->command->warn('No hay citas atendidas: ejecuta primero HorarioCitaSeeder.');
 
             return;
         }
