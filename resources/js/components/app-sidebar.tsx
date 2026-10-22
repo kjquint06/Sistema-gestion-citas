@@ -1,7 +1,14 @@
-import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { Link, usePage } from '@inertiajs/react';
+import {
+    CalendarDays,
+    Clock,
+    FileText,
+    LayoutGrid,
+    Stethoscope,
+    TrendingUp,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -14,30 +21,67 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import type { NavItem } from '@/types';
+import { index as agenda } from '@/routes/agenda';
+import { index as disponibilidad } from '@/routes/disponibilidad';
+import { index as expedientes } from '@/routes/expedientes';
+import { index as medicos } from '@/routes/medicos';
+import { index as pacientes } from '@/routes/pacientes';
+import { index as reportes } from '@/routes/reportes';
+import type { Auth, NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+// IMPORTANTE: estos valores deben ser iguales a las constantes ROL_* de app/Models/User.php
+const ROL = {
+    paciente: 'paciente',
+    medico: 'medico',
+    recepcionista: 'recepcionista',
+    admin: 'admin',
+};
 
-const footerNavItems: NavItem[] = [
+type ItemConRoles = NavItem & { roles?: string[] };
+
+// Si un item no tiene "roles", lo ven todos. Debe coincidir con routes/web.php
+const todosLosItems: ItemConRoles[] = [
+    { title: 'Resumen', href: dashboard(), icon: LayoutGrid },
+    { title: 'Agenda', href: agenda(), icon: CalendarDays },
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Pacientes',
+        href: pacientes(),
+        icon: Users,
+        roles: [ROL.medico, ROL.recepcionista, ROL.admin],
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Expedientes',
+        href: expedientes(),
+        icon: FileText,
+        roles: [ROL.medico, ROL.paciente],
+    },
+    {
+        title: 'Disponibilidad',
+        href: disponibilidad(),
+        icon: Clock,
+        roles: [ROL.medico, ROL.admin],
+    },
+    {
+        title: 'Médicos',
+        href: medicos(),
+        icon: Stethoscope,
+        roles: [ROL.admin],
+    },
+    {
+        title: 'Reportes',
+        href: reportes(),
+        icon: TrendingUp,
+        roles: [ROL.medico, ROL.recepcionista, ROL.admin],
     },
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<{ auth: Auth }>().props;
+
+    const items = todosLosItems.filter(
+        (item) => !item.roles || item.roles.includes(auth.user.rol),
+    );
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -53,11 +97,10 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={items} />
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
