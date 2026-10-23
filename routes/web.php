@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PacienteController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Pacientes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
-        Route::inertia('pacientes', 'pacientes/index')->name('pacientes.index');
+        Route::get('pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
     });
 
     // Expedientes: médico y paciente (el paciente ve solo el suyo)
