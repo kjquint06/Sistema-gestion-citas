@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -25,12 +26,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Disponibilidad (horarios): médico y administrador
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_ADMIN)->group(function () {
-        Route::inertia('disponibilidad', 'disponibilidad/index')->name('disponibilidad.index');
+        Route::get('disponibilidad', [MedicoController::class, 'disponibilidad'])->name('disponibilidad.index');
     });
 
     // Médicos y especialidades: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
-        Route::inertia('medicos', 'medicos/index')->name('medicos.index');
+        Route::get('medicos', [MedicoController::class, 'index'])->name('medicos.index');
     });
 
     // Reportes: personal de la clínica
