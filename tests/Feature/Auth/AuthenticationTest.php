@@ -11,28 +11,15 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create(['rol' => User::ROL_MEDICO]);
+    $user = User::factory()->create();
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'password',
-        'perfil' => 'medico',
     ]);
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
-});
-
-test('users cannot authenticate with a different profile', function () {
-    $user = User::factory()->create(['rol' => User::ROL_MEDICO]);
-
-    $this->post(route('login.store'), [
-        'email' => $user->email,
-        'password' => 'password',
-        'perfil' => 'paciente',
-    ])->assertSessionHasErrors('email');
-
-    $this->assertGuest();
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
@@ -43,12 +30,11 @@ test('users with two factor enabled are redirected to two factor challenge', fun
         'confirmPassword' => true,
     ]);
 
-    $user = User::factory()->withTwoFactor()->create(['rol' => User::ROL_MEDICO]);
+    $user = User::factory()->withTwoFactor()->create();
 
     $response = $this->post(route('login'), [
         'email' => $user->email,
         'password' => 'password',
-        'perfil' => 'medico',
     ]);
 
     $response->assertRedirect(route('two-factor.login'));
