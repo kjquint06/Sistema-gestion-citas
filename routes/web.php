@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\UsuarioController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +12,7 @@ Route::redirect('/', '/login')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Resumen: todos los roles
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Agenda: todos los roles (el paciente ve solo sus citas)
     Route::inertia('agenda', 'agenda/index')->name('agenda.index');
@@ -20,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Expedientes: médico y paciente (el paciente ve solo el suyo)
-    Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_PACIENTE)->group(function () {
+    Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_PACIENTE.','.User::ROL_ADMIN)->group(function () {
         Route::inertia('expedientes', 'expedientes/index')->name('expedientes.index');
     });
 
@@ -32,6 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Médicos y especialidades: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
         Route::get('medicos', [MedicoController::class, 'index'])->name('medicos.index');
+    });
+
+    Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
+        Route::get('especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
+        Route::get('usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
     });
 
     // Reportes: personal de la clínica
