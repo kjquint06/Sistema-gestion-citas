@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Head, Link, usePage, useForm, router } from '@inertiajs/react';
+import { Head, Link, usePage, router } from '@inertiajs/react';
 
 import { ArrowRight, Info, Plus, Search } from 'lucide-react';
 
@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { index as medicosRoute } from '@/routes/medicos';
 import { index as usuariosRoute } from '@/routes/usuarios';
 import { index as reportesRoute } from '@/routes/reportes';
+import { index as especialidadesRoute } from '@/routes/especialidades';
 import type { Auth } from '@/types';
 
 type Medico = {
@@ -83,11 +84,6 @@ export default function AdminDashboard({
     const [desde, setDesde] = useState(reporteCitas.desde);
     const [hasta, setHasta] = useState(reporteCitas.hasta);
 
-    // Formulario de especialidades
-    const especialidadForm = useForm({
-        nombre: '',
-    });
-
     // FILTRAR MÉDICOS
 
     const medicosFiltrados = medicos.filter((medico) => {
@@ -130,16 +126,6 @@ export default function AdminDashboard({
     const pctCanceladas = (reporteCitas.canceladas / totalCitas) * 100;
 
     const pctInasistencias = (reporteCitas.inasistencias / totalCitas) * 100;
-
-    // CREAR ESPECIALIDAD
-
-    const handleCreateSpecialty = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        especialidadForm.post('/especialidades', {
-            onSuccess: () => especialidadForm.reset(),
-        });
-    };
 
     // CONSULTAR REPORTE POR FECHAS
     const aplicarFechas = (e: React.FormEvent) => {
@@ -407,6 +393,16 @@ export default function AdminDashboard({
                             especialidades médicas.
                         </p>
 
+                        <div className="flex flex-wrap items-center gap-3">
+                            <Link
+                                href={especialidadesRoute()}
+                                className="flex items-center gap-2 rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0d655e]"
+                            >
+                                <Plus className="size-4" />
+                                Crear Especialidad
+                            </Link>
+                        </div>
+                        <br></br>
                         {/* Tabla de especialidades */}
 
                         <div className="mb-6 overflow-x-auto">
@@ -462,48 +458,6 @@ export default function AdminDashboard({
                                 </tbody>
                             </table>
                         </div>
-
-                        {/* Formulario para crear especialidad */}
-
-                        <form onSubmit={handleCreateSpecialty}>
-                            <label className="mb-2 block text-xs font-semibold text-slate-700">
-                                Nombre de especialidad
-                            </label>
-
-                            <div className="flex flex-wrap gap-4">
-                                <input
-                                    type="text"
-                                    placeholder="Nueva especialidad..."
-                                    value={especialidadForm.data.nombre}
-                                    onChange={(e) =>
-                                        especialidadForm.setData(
-                                            'nombre',
-                                            e.target.value,
-                                        )
-                                    }
-                                    required
-                                    className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm focus:ring-2 focus:ring-[#0f766e] focus:outline-none"
-                                />
-
-                                <button
-                                    type="submit"
-                                    disabled={especialidadForm.processing}
-                                    className="flex items-center gap-2 rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#0d655e] disabled:opacity-50"
-                                >
-                                    <Plus className="size-4" />
-
-                                    {especialidadForm.processing
-                                        ? 'Guardando...'
-                                        : 'Crear especialidad'}
-                                </button>
-                            </div>
-
-                            {especialidadForm.errors.nombre && (
-                                <p className="mt-2 text-xs text-red-500">
-                                    {especialidadForm.errors.nombre}
-                                </p>
-                            )}
-                        </form>
                     </div>
 
                     {/* Confirmación informativa */}
