@@ -7,6 +7,7 @@ import {
     Stethoscope,
     TrendingUp,
     Users,
+    HeartPulse,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
@@ -25,7 +26,10 @@ import { index as agenda } from '@/routes/agenda';
 import { index as disponibilidad } from '@/routes/disponibilidad';
 import { index as expedientes } from '@/routes/expedientes';
 import { index as medicos } from '@/routes/medicos';
+import { index as especialidades } from '@/routes/especialidades';
 import { index as pacientes } from '@/routes/pacientes';
+import { index as usuarios } from '@/routes/usuarios';
+
 import { index as reportes } from '@/routes/reportes';
 import type { Auth, NavItem } from '@/types';
 
@@ -41,8 +45,13 @@ type ItemConRoles = NavItem & { roles?: string[] };
 
 // Si un item no tiene "roles", lo ven todos. Debe coincidir con routes/web.php
 const todosLosItems: ItemConRoles[] = [
-    { title: 'Resumen', href: dashboard(), icon: LayoutGrid },
-    { title: 'Agenda', href: agenda(), icon: CalendarDays },
+    { title: 'Panel General', href: dashboard(), icon: LayoutGrid },
+    {
+        title: 'Agenda de Citas',
+        href: agenda(),
+        icon: CalendarDays,
+        roles: [ROL.paciente, ROL.recepcionista, ROL.admin],
+    },
     {
         title: 'Pacientes',
         href: pacientes(),
@@ -50,10 +59,22 @@ const todosLosItems: ItemConRoles[] = [
         roles: [ROL.medico, ROL.recepcionista, ROL.admin],
     },
     {
-        title: 'Expedientes',
+        title: 'Expedientes clinicos',
         href: expedientes(),
         icon: FileText,
-        roles: [ROL.medico, ROL.paciente],
+        roles: [ROL.medico, ROL.paciente, ROL.admin],
+    },
+    {
+        title: 'Médicos',
+        href: medicos(),
+        icon: Stethoscope,
+        roles: [ROL.admin],
+    },
+    {
+        title: 'Especialidades',
+        href: especialidades(),
+        icon: HeartPulse,
+        roles: [ROL.admin],
     },
     {
         title: 'Disponibilidad',
@@ -62,9 +83,9 @@ const todosLosItems: ItemConRoles[] = [
         roles: [ROL.medico, ROL.admin],
     },
     {
-        title: 'Médicos',
-        href: medicos(),
-        icon: Stethoscope,
+        title: 'Usuarios',
+        href: usuarios(),
+        icon: Users,
         roles: [ROL.admin],
     },
     {
