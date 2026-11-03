@@ -1,47 +1,15 @@
 import { Form, Head } from '@inertiajs/react';
-import {
-    Check,
-    CalendarDays,
-    ChevronRight,
-    Settings,
-    HeartPulse,
-    Stethoscope,
-    Users,
-} from 'lucide-react';
-import { useState } from 'react';
+import { ChevronRight, HeartPulse, Info } from 'lucide-react';
 import InputError from '@/components/input-error';
+import TextLink from '@/components/text-link';
 import { Spinner } from '@/components/ui/spinner';
 import { store } from '@/routes/login';
+import { request } from '@/routes/password';
+
 type Props = {
     status?: string;
     canResetPassword: boolean;
 };
-const perfiles = [
-    {
-        id: 'medico',
-        titulo: 'Médico',
-        desc: 'Agenda y expedientes',
-        icono: Stethoscope,
-    },
-    {
-        id: 'paciente',
-        titulo: 'Paciente',
-        desc: 'Citas e historial',
-        icono: Users,
-    },
-    {
-        id: 'recepcion',
-        titulo: 'Recepción',
-        desc: 'Agenda general',
-        icono: CalendarDays,
-    },
-    {
-        id: 'administrador',
-        titulo: 'Administrador',
-        desc: 'Gestión y reportes',
-        icono: Settings,
-    },
-];
 
 const estadisticas = [
     { valor: '100%', etiqueta: 'Confidencial' },
@@ -49,11 +17,7 @@ const estadisticas = [
     { valor: '4', etiqueta: 'Perfiles de acceso' },
 ];
 
-export default function Login({ status }: Props) {
-    const [perfil, setPerfil] = useState('medico');
-    const [verPassword, setVerPassword] = useState(false);
-    const perfilActual = perfiles.find((p) => p.id === perfil)!;
-
+export default function Login({ status, canResetPassword }: Props) {
     return (
         <>
             <Head title="Iniciar sesión" />
@@ -106,17 +70,13 @@ export default function Login({ status }: Props) {
                 </aside>
 
                 {/* Panel derecho */}
-                <main className="flex items-center justify-center bg-slate-50 p-6 sm:p-10">
+                <main className="flex items-center justify-center bg-white p-6 sm:p-10">
                     <div className="w-full max-w-md">
-                        <p className="text-[11px] font-bold tracking-widest text-teal-700 uppercase">
-                            Bienvenido de nuevo
-                        </p>
-                        <h2 className="mt-2 text-3xl font-bold text-slate-900">
-                            Ingresa a tu cuenta
+                        <h2 className="text-4xl font-medium text-slate-800">
+                            Iniciar sesión
                         </h2>
-                        <p className="mt-2 text-sm text-slate-500">
-                            Selecciona tu perfil para acceder a tu espacio de
-                            trabajo.
+                        <p className="mt-3 text-sm text-slate-500">
+                            Accede con el correo asociado a tu cuenta.
                         </p>
 
                         {status && (
@@ -128,65 +88,10 @@ export default function Login({ status }: Props) {
                         <Form
                             {...store.form()}
                             resetOnSuccess={['password']}
-                            className="mt-6 flex flex-col gap-5"
+                            className="mt-8 flex flex-col gap-6"
                         >
                             {({ processing, errors }) => (
                                 <>
-                                    <input
-                                        type="hidden"
-                                        name="perfil"
-                                        value={perfil}
-                                    />
-
-                                    {/* Selector de perfil */}
-                                    <div>
-                                        <p className="mb-2 text-xs font-semibold text-slate-800">
-                                            ¿Cómo deseas ingresar?
-                                        </p>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {perfiles.map((p) => {
-                                                const activo = perfil === p.id;
-                                                const Icono = p.icono;
-                                                return (
-                                                    <button
-                                                        key={p.id}
-                                                        type="button"
-                                                        onClick={() =>
-                                                            setPerfil(p.id)
-                                                        }
-                                                        className={`relative flex items-center gap-3 rounded-xl border p-3 text-left transition ${
-                                                            activo
-                                                                ? 'border-teal-600 bg-teal-50'
-                                                                : 'border-slate-200 bg-white hover:border-slate-300'
-                                                        }`}
-                                                    >
-                                                        <span
-                                                            className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
-                                                                activo
-                                                                    ? 'bg-teal-700 text-white'
-                                                                    : 'bg-slate-100 text-slate-500'
-                                                            }`}
-                                                        >
-                                                            <Icono className="size-4" />
-                                                        </span>
-                                                        <span>
-                                                            <span className="block text-sm font-semibold text-slate-900">
-                                                                {p.titulo}
-                                                            </span>
-                                                            <span className="block text-[11px] text-slate-500">
-                                                                {p.desc}
-                                                            </span>
-                                                        </span>
-                                                        {activo && (
-                                                            <Check className="absolute top-2 right-2 size-4 rounded-full bg-teal-700 p-0.5 text-white" />
-                                                        )}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    {/* Correo */}
                                     <div className="grid gap-2">
                                         <label
                                             htmlFor="email"
@@ -202,13 +107,12 @@ export default function Login({ status }: Props) {
                                             autoFocus
                                             tabIndex={1}
                                             autoComplete="email"
-                                            placeholder="correo@ejemplo.com"
-                                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
+                                            placeholder="nombre@example.com"
+                                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                         />
                                         <InputError message={errors.email} />
                                     </div>
 
-                                    {/* Contraseña */}
                                     <div className="grid gap-2">
                                         <label
                                             htmlFor="password"
@@ -216,62 +120,49 @@ export default function Login({ status }: Props) {
                                         >
                                             Contraseña
                                         </label>
-                                        <div className="relative">
-                                            <input
-                                                id="password"
-                                                type={
-                                                    verPassword
-                                                        ? 'text'
-                                                        : 'password'
-                                                }
-                                                name="password"
-                                                required
-                                                tabIndex={2}
-                                                autoComplete="current-password"
-                                                placeholder="Tu contraseña"
-                                                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 pr-16 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() =>
-                                                    setVerPassword(!verPassword)
-                                                }
-                                                className="absolute top-1/2 right-4 -translate-y-1/2 text-xs font-semibold text-teal-700"
-                                            >
-                                                {verPassword
-                                                    ? 'Ocultar'
-                                                    : 'Ver'}
-                                            </button>
-                                        </div>
+                                        <input
+                                            id="password"
+                                            type="password"
+                                            name="password"
+                                            required
+                                            tabIndex={2}
+                                            autoComplete="current-password"
+                                            placeholder="Introduce tu contraseña"
+                                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
+                                        />
                                         <InputError message={errors.password} />
                                     </div>
 
-                                    {/* Recordar + olvidaste */}
                                     <div className="flex items-center justify-between">
-                                        <label className="flex items-center gap-2 text-xs text-slate-600">
+                                        <label className="flex items-center gap-2 text-xs text-slate-500">
                                             <input
                                                 type="checkbox"
                                                 name="remember"
                                                 tabIndex={3}
                                                 className="size-4 rounded accent-teal-700"
                                             />
-                                            Recordar mi sesión
+                                            Recordar mi correo
                                         </label>
-                                        <span className="text-xs font-semibold text-teal-700">
-                                            ¿Olvidaste tu contraseña?
-                                        </span>
+                                        {canResetPassword && (
+                                            <TextLink
+                                                href={request()}
+                                                tabIndex={5}
+                                                className="text-xs font-semibold text-teal-700 no-underline"
+                                            >
+                                                ¿Olvidaste tu contraseña?
+                                            </TextLink>
+                                        )}
                                     </div>
 
-                                    {/* Botón */}
                                     <button
                                         type="submit"
                                         tabIndex={4}
                                         disabled={processing}
                                         data-test="login-button"
-                                        className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal-700 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-700/20 transition hover:bg-teal-800 disabled:opacity-60"
+                                        className="flex w-fit items-center justify-center gap-2 rounded-xl bg-teal-700 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-teal-700/20 transition hover:bg-teal-800 disabled:opacity-60"
                                     >
                                         {processing && <Spinner />}
-                                        Ingresar como {perfilActual.titulo}
+                                        Iniciar sesión
                                         {!processing && (
                                             <ChevronRight className="size-4" />
                                         )}
@@ -280,16 +171,26 @@ export default function Login({ status }: Props) {
                             )}
                         </Form>
 
-                        <p className="mt-6 text-center text-xs text-slate-500">
-                            ¿Eres paciente nuevo?{' '}
+                        <div className="mt-8 flex gap-3 rounded-xl bg-slate-100 p-4">
+                            <Info className="mt-0.5 size-4 shrink-0 text-slate-500" />
+                            <div>
+                                <p className="text-xs font-semibold text-slate-600">
+                                    El acceso depende de tu cuenta
+                                </p>
+                                <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                                    El rol se asigna previamente. El personal de
+                                    la clínica no se registra como médico o
+                                    administrador desde esta página.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 border-t border-slate-200 pt-6 text-sm text-slate-500">
+                            ¿Es tu primera vez?{' '}
                             <span className="font-semibold text-teal-700">
-                                Crea tu cuenta
+                                Crear cuenta de paciente →
                             </span>
-                        </p>
-                        <p className="mt-8 text-center text-[10px] text-slate-400">
-                            Al ingresar aceptas nuestro Aviso de privacidad y
-                            las políticas de protección de datos clínicos.
-                        </p>
+                        </div>
                     </div>
                 </main>
             </div>
