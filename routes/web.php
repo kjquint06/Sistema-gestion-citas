@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
@@ -16,7 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
 
     // Agenda: todos los roles (el paciente ve solo sus citas)
-    Route::inertia('agenda', 'agenda/index')->name('agenda.index');
+    Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
 
     // Pacientes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
