@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\UsuarioController;
@@ -24,7 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Expedientes: médico y paciente (el paciente ve solo el suyo)
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_PACIENTE.','.User::ROL_ADMIN)->group(function () {
-        Route::inertia('expedientes', 'expedientes/index')->name('expedientes.index');
+        Route::get('expedientes', [ExpedienteController::class, 'index'])->name('expedientes.index');
+        Route::get('expedientes/{paciente}', [ExpedienteController::class, 'show'])->name('expedientes.show');
     });
 
     // Disponibilidad (horarios): médico y administrador
