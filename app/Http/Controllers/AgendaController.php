@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cita;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,14 +28,19 @@ class AgendaController extends Controller
             $query->whereRaw('1 = 0');
         }
 
-        $citas = $query->get()->map(fn (Cita $cita) => [
-            'id' => $cita->id,
-            'paciente' => $cita->paciente->usuario->name,
-            'medico' => $cita->medico->usuario->name,
-            'fecha' => $cita->inicia_en->format('d/m/Y'),
-            'hora' => $cita->inicia_en->format('H:i').' - '.$cita->termina_en->format('H:i'),
-            'estado' => $cita->estado,
-        ]);
+        $citas = $query->get()->map(function (Cita $cita) {
+            $inicio = Carbon::parse($cita->inicia_en);
+            $fin = Carbon::parse($cita->termina_en);
+
+            return [
+                'id' => $cita->id,
+                'paciente' => $cita->paciente->usuario->name,
+                'medico' => $cita->medico->usuario->name,
+                'fecha' => $inicio->format('d/m/Y'),
+                'hora' => $inicio->format('H:i').' - '.$fin->format('H:i'),
+                'estado' => $cita->estado,
+            ];
+        });
 
         return Inertia::render('agenda/index', [
             'citas' => $citas,
