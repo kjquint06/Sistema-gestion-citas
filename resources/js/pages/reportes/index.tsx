@@ -70,15 +70,19 @@ function formatearFecha(fecha: string): string {
 function inicioDeMes(): string {
     const hoy = new Date();
 
-    return new Date(hoy.getFullYear(), hoy.getMonth(), 1)
-        .toLocaleDateString('en-CA');
+    return new Date(hoy.getFullYear(), hoy.getMonth(), 1).toLocaleDateString(
+        'en-CA',
+    );
 }
 
 function finDeMes(): string {
     const hoy = new Date();
 
-    return new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0)
-        .toLocaleDateString('en-CA');
+    return new Date(
+        hoy.getFullYear(),
+        hoy.getMonth() + 1,
+        0,
+    ).toLocaleDateString('en-CA');
 }
 
 export default function ReportesIndex({

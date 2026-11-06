@@ -11,7 +11,8 @@ export default function UsuariosCreate() {
                 <div>
                     <h1 className="text-3xl font-semibold">Nuevo usuario</h1>
                     <p className="mt-1 text-muted-foreground">
-                        Completa los datos de la cuenta. Los campos con * son obligatorios.
+                        Completa los datos de la cuenta. Los campos con * son
+                        obligatorios.
                     </p>
                 </div>
 

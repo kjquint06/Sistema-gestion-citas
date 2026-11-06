@@ -84,7 +84,7 @@ export default function UsuariosIndex({
                     </Button>
                 </div>
 
-                <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+                <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
                     {/* Cuentas de usuario */}
                     <section className="rounded-2xl border bg-card p-6 shadow-sm">
                         <h2 className="text-xl font-semibold">
@@ -106,7 +106,9 @@ export default function UsuariosIndex({
                                 <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
                                     value={busqueda}
-                                    onChange={(e) => setBusqueda(e.target.value)}
+                                    onChange={(e) =>
+                                        setBusqueda(e.target.value)
+                                    }
                                     placeholder="Buscar nombre o correo..."
                                     className="h-11 pl-9"
                                     aria-label="Buscar usuario"
@@ -156,7 +158,7 @@ export default function UsuariosIndex({
                                             >
                                                 <td className="px-4 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-teal-50 text-sm font-semibold text-teal-700 dark:bg-teal-900/40 dark:text-teal-300">
+                                                        <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-teal-50 text-sm font-semibold text-teal-700 dark:bg-teal-900/40 dark:text-teal-300">
                                                             {iniciales(
                                                                 usuario.name,
                                                             )}
@@ -184,7 +186,7 @@ export default function UsuariosIndex({
                                                     </span>
                                                 </td>
                                                 <td className="px-4 py-4">
-                                                    <div className="flex flex-col items-start gap-1">
+                                                    <div className="flex flex-col items-start gap-1 whitespace-nowrap">
                                                         <Link
                                                             href={edit(
                                                                 usuario.id,
