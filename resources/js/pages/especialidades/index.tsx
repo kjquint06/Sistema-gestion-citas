@@ -1,12 +1,85 @@
-import { Head } from '@inertiajs/react';
-import { index } from '@/routes/especialidades';
-import { Stethoscope, Users } from 'lucide-react';
+import { Form, Head, Link } from '@inertiajs/react';
+import { Pencil, Plus, Stethoscope, Trash2, Users } from 'lucide-react';
+import { useState } from 'react';
+import EspecialidadController from '@/actions/App/Http/Controllers/EspecialidadController';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogTitle,
+    DialogTrigger,
+} from '@/components/ui/dialog';
+import { create, edit, index } from '@/routes/especialidades';
 
 type Especialidad = {
     id: number;
     nombre: string;
     medicos_count: number;
 };
+
+function EliminarEspecialidad({
+    especialidad,
+}: {
+    especialidad: Especialidad;
+}) {
+    const [abierto, setAbierto] = useState(false);
+
+    return (
+        <Dialog open={abierto} onOpenChange={setAbierto}>
+            <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                    <Trash2 size={14} />
+                    Eliminar
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogTitle>¿Eliminar la especialidad?</DialogTitle>
+                <DialogDescription>
+                    Se eliminará la especialidad{' '}
+                    <strong>{especialidad.nombre}</strong>. Esta acción no se
+                    puede deshacer.
+                </DialogDescription>
+
+                <Form
+                    {...EspecialidadController.destroy.form(especialidad.id)}
+                    options={{ preserveScroll: true }}
+                    onSuccess={() => setAbierto(false)}
+                    className="space-y-4"
+                >
+                    {({ processing, errors, resetAndClearErrors }) => (
+                        <>
+                            <InputError message={errors.eliminar} />
+
+                            <DialogFooter className="gap-2">
+                                <DialogClose asChild>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        onClick={() => resetAndClearErrors()}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </DialogClose>
+
+                                <Button
+                                    type="submit"
+                                    variant="destructive"
+                                    disabled={processing}
+                                >
+                                    Eliminar
+                                </Button>
+                            </DialogFooter>
+                        </>
+                    )}
+                </Form>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
 export default function EspecialidadesIndex({
     especialidades,
@@ -18,8 +91,7 @@ export default function EspecialidadesIndex({
             <Head title="Especialidades" />
 
             <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                {/* Encabezado */}
-                <div>
+                <div className="flex flex-wrap items-center justify-between gap-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-xl bg-teal-100 p-3 text-teal-700">
                             <Stethoscope size={25} />
@@ -30,15 +102,21 @@ export default function EspecialidadesIndex({
                                 Gestión de especialidades
                             </h1>
                             <p className="text-sm text-muted-foreground">
-                                Consulta y visualiza las especialidades médicas
-                                registradas en el sistema.
+                                Crea, edita y elimina las especialidades médicas
+                                del sistema.
                             </p>
                         </div>
                     </div>
+
+                    <Button asChild>
+                        <Link href={create()}>
+                            <Plus size={16} />
+                            Nueva especialidad
+                        </Link>
+                    </Button>
                 </div>
 
-                {/* Total de especialidades */}
-                <div className="rounded-xl border bg-white p-5 shadow-sm">
+                <div className="rounded-xl border bg-card p-5 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-sm text-muted-foreground">
@@ -55,14 +133,14 @@ export default function EspecialidadesIndex({
                     </div>
                 </div>
 
-                {/* Tabla de especialidades */}
-                <div className="overflow-hidden rounded-xl border bg-white shadow-sm">
+                <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
                     <div className="border-b p-5">
                         <h2 className="font-semibold">
                             Especialidades registradas
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                            Información general de las especialidades médicas.
+                            Una especialidad con médicos asignados no se puede
+                            eliminar.
                         </p>
                     </div>
 
@@ -76,6 +154,9 @@ export default function EspecialidadesIndex({
                                     <th className="p-4 font-medium">
                                         Médicos asociados
                                     </th>
+                                    <th className="p-4 text-right font-medium">
+                                        Acciones
+                                    </th>
                                 </tr>
                             </thead>
 
@@ -83,7 +164,7 @@ export default function EspecialidadesIndex({
                                 {especialidades.length === 0 ? (
                                     <tr>
                                         <td
-                                            colSpan={2}
+                                            colSpan={3}
                                             className="p-6 text-center text-muted-foreground"
                                         >
                                             No hay especialidades registradas.
@@ -118,6 +199,31 @@ export default function EspecialidadesIndex({
                                                     1
                                                         ? ' médico'
                                                         : ' médicos'}
+                                                </div>
+                                            </td>
+
+                                            <td className="p-4">
+                                                <div className="flex justify-end gap-2">
+                                                    <Button
+                                                        variant="secondary"
+                                                        size="sm"
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={edit(
+                                                                especialidad.id,
+                                                            )}
+                                                        >
+                                                            <Pencil size={14} />
+                                                            Editar
+                                                        </Link>
+                                                    </Button>
+
+                                                    <EliminarEspecialidad
+                                                        especialidad={
+                                                            especialidad
+                                                        }
+                                                    />
                                                 </div>
                                             </td>
                                         </tr>

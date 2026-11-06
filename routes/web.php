@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('disponibilidad', [MedicoController::class, 'disponibilidad'])->name('disponibilidad.index');
     });
 
-                // Médicos y especialidades: solo administrador
+    // Médicos y especialidades: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
         Route::resource('medicos', MedicoController::class)
             ->parameters(['medicos' => 'medico'])

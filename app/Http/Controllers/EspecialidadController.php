@@ -35,9 +35,9 @@ class EspecialidadController extends Controller
     {
         Especialidad::create($request->validated());
 
-        return redirect()
-            ->route('especialidades.index')
-            ->with('success', 'Especialidad creada correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Especialidad creada correctamente.']);
+
+        return redirect()->route('especialidades.index');
     }
 
     public function edit(Especialidad $especialidad): Response
@@ -54,9 +54,9 @@ class EspecialidadController extends Controller
     {
         $especialidad->update($request->validated());
 
-        return redirect()
-            ->route('especialidades.index')
-            ->with('success', 'Especialidad actualizada correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Especialidad actualizada correctamente.']);
+
+        return redirect()->route('especialidades.index');
     }
 
     public function destroy(Especialidad $especialidad): RedirectResponse
@@ -69,8 +69,8 @@ class EspecialidadController extends Controller
 
         $especialidad->delete();
 
-        return redirect()
-            ->route('especialidades.index')
-            ->with('success', 'Especialidad eliminada correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Especialidad eliminada correctamente.']);
+
+        return redirect()->route('especialidades.index');
     }
 }
