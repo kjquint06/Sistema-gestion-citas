@@ -38,11 +38,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Médicos y especialidades: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
-        Route::get('medicos', [MedicoController::class, 'index'])->name('medicos.index');
-    });
-
-    Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
-        Route::get('especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
+        Route::resource('medicos', MedicoController::class)
+            ->parameters(['medicos' => 'medico'])
+            ->except('show');
+        Route::resource('especialidades', EspecialidadController::class)
+            ->parameters(['especialidades' => 'especialidad'])
+            ->except('show');
     });
 
     // Usuarios: solo administrador (crear, editar y eliminar cuentas)
