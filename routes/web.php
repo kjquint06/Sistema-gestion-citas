@@ -34,13 +34,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('disponibilidad', [MedicoController::class, 'disponibilidad'])->name('disponibilidad.index');
     });
 
-    // Médicos y especialidades: solo administrador
+                // Médicos y especialidades: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
-        Route::get('medicos', [MedicoController::class, 'index'])->name('medicos.index');
+        Route::resource('medicos', MedicoController::class)
+            ->parameters(['medicos' => 'medico'])
+            ->except('show');
+        Route::resource('especialidades', EspecialidadController::class)
+            ->parameters(['especialidades' => 'especialidad'])
+            ->except('show');
     });
 
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
-        Route::get('especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
         Route::get('usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
     });
 
