@@ -6,6 +6,7 @@ use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuarioController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -42,12 +43,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
         Route::get('especialidades', [EspecialidadController::class, 'index'])->name('especialidades.index');
-        Route::get('usuarios', [UsuarioController::class, 'index'])->name('usuarios.index');
+    });
+
+    // Usuarios: solo administrador (crear, editar y eliminar cuentas)
+    Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
+        Route::resource('usuarios', UsuarioController::class)
+            ->except(['show'])
+            ->parameters(['usuarios' => 'usuario']);
     });
 
     // Reportes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
-        Route::inertia('reportes', 'reportes/index')->name('reportes.index');
+        Route::get('reportes', [ReporteController::class, 'index'])->name('reportes.index');
     });
 });
 
