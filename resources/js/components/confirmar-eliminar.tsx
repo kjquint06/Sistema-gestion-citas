@@ -20,6 +20,7 @@ type Props = {
     accion: Pick<ComponentProps<typeof Form>, 'action' | 'method'>;
     textoBoton?: string;
     textoConfirmar?: string;
+    textoCerrar?: string;
 };
 
 export default function ConfirmarEliminar({
@@ -28,6 +29,7 @@ export default function ConfirmarEliminar({
     accion,
     textoBoton = 'Eliminar',
     textoConfirmar = 'Eliminar',
+    textoCerrar = 'Cancelar',
 }: Props) {
     const [abierto, setAbierto] = useState(false);
 
@@ -51,7 +53,9 @@ export default function ConfirmarEliminar({
                 >
                     {({ processing, errors, resetAndClearErrors }) => (
                         <>
-                            <InputError message={errors.eliminar} />
+                            <InputError
+                                message={errors.eliminar ?? errors.cancelar}
+                            />
 
                             <DialogFooter className="gap-2">
                                 <DialogClose asChild>
@@ -60,7 +64,7 @@ export default function ConfirmarEliminar({
                                         variant="secondary"
                                         onClick={() => resetAndClearErrors()}
                                     >
-                                        Cancelar
+                                        {textoCerrar}
                                     </Button>
                                 </DialogClose>
 
