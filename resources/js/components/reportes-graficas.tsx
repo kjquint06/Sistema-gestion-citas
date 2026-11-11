@@ -21,6 +21,7 @@ const estiloTooltip = {
 };
 const cursor = { fill: 'rgba(128, 128, 128, 0.15)' };
 const tick = { fill: 'currentColor', fontSize: 12 };
+const tickMes = { fill: 'currentColor', fontSize: 11 };
 
 function SinDatos() {
     return (
@@ -54,7 +55,8 @@ export function GraficaMeses({
                     />
                     <XAxis
                         dataKey="etiqueta"
-                        tick={tick}
+                        interval={0}
+                        tick={tickMes}
                         tickLine={false}
                         axisLine={false}
                     />
