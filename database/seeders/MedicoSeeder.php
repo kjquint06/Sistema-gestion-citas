@@ -22,9 +22,9 @@ class MedicoSeeder extends Seeder
         $idEspecialidad = fn (string $nombre) => DB::table('especialidades')->where('nombre', $nombre)->value('id');
 
         $medicos = [
-            ['name' => 'Dr. Prueba',    'email' => 'medico@clinica.test',  'especialidad' => 'Medicina General', 'colegiado' => 'CMH-0001'],
-            ['name' => 'Dra. Ana Morales', 'email' => 'ana@clinica.test',  'especialidad' => 'Pediatría',        'colegiado' => 'CMH-0002'],
-            ['name' => 'Dr. Luis Fuentes', 'email' => 'luis@clinica.test', 'especialidad' => 'Cardiología',      'colegiado' => 'CMH-0003'],
+            ['name' => 'Dr. Prueba',       'email' => 'medico@clinica.test', 'especialidad' => 'Medicina General', 'colegiado' => 'CMH-0001', 'consultorio' => 'Consultorio 101'],
+            ['name' => 'Dra. Ana Morales', 'email' => 'ana@clinica.test',    'especialidad' => 'Pediatría',        'colegiado' => 'CMH-0002', 'consultorio' => 'Consultorio 102'],
+            ['name' => 'Dr. Luis Fuentes', 'email' => 'luis@clinica.test',   'especialidad' => 'Cardiología',      'colegiado' => 'CMH-0003', 'consultorio' => 'Consultorio 201'],
         ];
 
         foreach ($medicos as $datos) {
@@ -45,6 +45,7 @@ class MedicoSeeder extends Seeder
                     'especialidad_id' => $idEspecialidad($datos['especialidad']),
                     'numero_colegiado' => $datos['colegiado'],
                     'duracion_cita' => 30,
+                    'consultorio' => $datos['consultorio'],
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

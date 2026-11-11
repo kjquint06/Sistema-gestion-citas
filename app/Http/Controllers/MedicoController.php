@@ -44,6 +44,7 @@ class MedicoController extends Controller
                 'especialidad' => $medico->especialidad->nombre,
                 'numero_colegiado' => $medico->numero_colegiado,
                 'duracion_cita' => $medico->duracion_cita,
+                'consultorio' => $medico->consultorio,
             ]);
 
         return Inertia::render('medicos/index', [
@@ -91,12 +92,13 @@ class MedicoController extends Controller
                 'especialidad_id' => $datos['especialidad_id'],
                 'numero_colegiado' => $datos['numero_colegiado'],
                 'duracion_cita' => $datos['duracion_cita'],
+                'consultorio' => $datos['consultorio'] ?? null,
             ]);
         });
 
-        return redirect()
-            ->route('medicos.index')
-            ->with('success', 'Médico creado correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Médico creado correctamente.']);
+
+        return redirect()->route('medicos.index');
     }
 
     public function edit(Medico $medico): Response
@@ -111,6 +113,7 @@ class MedicoController extends Controller
                 'especialidad_id' => $medico->especialidad_id,
                 'numero_colegiado' => $medico->numero_colegiado,
                 'duracion_cita' => $medico->duracion_cita,
+                'consultorio' => $medico->consultorio,
             ],
             'especialidades' => Especialidad::orderBy('nombre')->get(['id', 'nombre']),
         ]);
@@ -120,9 +123,9 @@ class MedicoController extends Controller
     {
         $medico->update($request->validated());
 
-        return redirect()
-            ->route('medicos.index')
-            ->with('success', 'Médico actualizado correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Médico actualizado correctamente.']);
+
+        return redirect()->route('medicos.index');
     }
 
     public function destroy(Medico $medico): RedirectResponse
@@ -135,9 +138,9 @@ class MedicoController extends Controller
 
         $medico->delete();
 
-        return redirect()
-            ->route('medicos.index')
-            ->with('success', 'Médico eliminado correctamente.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Médico eliminado correctamente.']);
+
+        return redirect()->route('medicos.index');
     }
 
     public function disponibilidad(): Response

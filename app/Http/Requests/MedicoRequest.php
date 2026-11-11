@@ -28,6 +28,7 @@ class MedicoRequest extends FormRequest
                 Rule::unique('medicos', 'numero_colegiado')->ignore($this->route('medico')),
             ],
             'duracion_cita' => ['required', 'integer', 'min:5', 'max:240'],
+            'consultorio' => ['nullable', 'string', 'max:50'],
         ];
 
         // El usuario vinculado solo se elige al crear; al editar no cambia
@@ -65,6 +66,7 @@ class MedicoRequest extends FormRequest
             'duracion_cita.required' => 'La duración de la cita es obligatoria.',
             'duracion_cita.min' => 'La duración mínima es de 5 minutos.',
             'duracion_cita.max' => 'La duración máxima es de 240 minutos.',
+            'consultorio.max' => 'El consultorio no puede pasar de 50 caracteres.',
             'usuario_id.required' => 'Debes elegir un usuario con rol médico.',
             'usuario_id.exists' => 'El usuario elegido no tiene rol médico.',
             'usuario_id.unique' => 'Ese usuario ya está vinculado a otro médico.',
