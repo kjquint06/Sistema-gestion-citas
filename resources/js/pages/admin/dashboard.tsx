@@ -168,61 +168,55 @@ export default function AdminDashboard({
                     </p>
                 </div>
 
-                {/* TARJETAS DE ESTADÍSTICAS */}
+                {/* TARJETAS DE ESTADÍSTICAS (compactas) */}
 
-                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-3">
                     {/* Médicos */}
 
-                    <div className="flex h-40 flex-col justify-between rounded-2xl bg-[#0f766e] p-6 text-white shadow-sm">
-                        <span className="text-sm font-medium opacity-90">
+                    <div className="flex flex-col gap-0.5 rounded-xl bg-[#0f766e] px-4 py-3 text-white shadow-sm">
+                        <span className="text-xs font-medium opacity-90">
                             Médicos registrados
                         </span>
 
-                        <div>
-                            <span className="text-4xl font-bold tracking-tight">
-                                {totales.medicos}
-                            </span>
+                        <span className="text-2xl font-bold tracking-tight">
+                            {totales.medicos}
+                        </span>
 
-                            <p className="mt-1 text-xs opacity-80">
-                                Profesionales registrados en el sistema
-                            </p>
-                        </div>
+                        <p className="text-[11px] opacity-80">
+                            Profesionales registrados en el sistema
+                        </p>
                     </div>
 
                     {/* Especialidades */}
 
-                    <div className="flex h-40 flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
-                        <span className="text-sm font-medium text-slate-500">
+                    <div className="flex flex-col gap-0.5 rounded-xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm">
+                        <span className="text-xs font-medium text-slate-500">
                             Especialidades
                         </span>
 
-                        <div>
-                            <span className="text-4xl font-bold tracking-tight text-slate-900">
-                                {totales.especialidades}
-                            </span>
+                        <span className="text-2xl font-bold tracking-tight text-slate-900">
+                            {totales.especialidades}
+                        </span>
 
-                            <p className="mt-1 text-xs text-slate-400">
-                                Especialidades médicas registradas
-                            </p>
-                        </div>
+                        <p className="text-[11px] text-slate-400">
+                            Especialidades médicas registradas
+                        </p>
                     </div>
 
                     {/* Citas */}
 
-                    <div className="flex h-40 flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
-                        <span className="text-sm font-medium text-slate-500">
+                    <div className="flex flex-col gap-0.5 rounded-xl border border-slate-200/80 bg-white px-4 py-3 shadow-sm">
+                        <span className="text-xs font-medium text-slate-500">
                             Citas de hoy
                         </span>
 
-                        <div>
-                            <span className="text-4xl font-bold tracking-tight text-slate-900">
-                                {totales.citas_hoy}
-                            </span>
+                        <span className="text-2xl font-bold tracking-tight text-slate-900">
+                            {totales.citas_hoy}
+                        </span>
 
-                            <p className="mt-1 text-xs text-slate-400">
-                                Citas programadas, excepto canceladas
-                            </p>
-                        </div>
+                        <p className="text-[11px] text-slate-400">
+                            Citas programadas, excepto canceladas
+                        </p>
                     </div>
                 </div>
 
