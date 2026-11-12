@@ -75,7 +75,7 @@ class CitaRequest extends FormRequest
 
     public function fin(): Carbon
     {
-        $duracion = Medico::find($this->integer('medico_id'))?->duracion_cita ?? 30;
+        $duracion = Medico::find($this->integer('medico_id'))->duracion_cita ?? 30;
 
         return $this->inicio()->addMinutes($duracion);
     }

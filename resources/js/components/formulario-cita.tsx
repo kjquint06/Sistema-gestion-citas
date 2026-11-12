@@ -188,7 +188,9 @@ export default function FormularioCita({
                         )}
 
                         <div className="grid gap-2 sm:col-span-2">
-                            <Label htmlFor="motivo">Motivo de la consulta</Label>
+                            <Label htmlFor="motivo">
+                                Motivo de la consulta
+                            </Label>
                             <Input
                                 id="motivo"
                                 name="motivo"

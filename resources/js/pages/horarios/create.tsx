@@ -103,7 +103,9 @@ export default function HorariosCreate({
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="hora_fin">Hora de fin</Label>
+                                    <Label htmlFor="hora_fin">
+                                        Hora de fin
+                                    </Label>
                                     <Input
                                         id="hora_fin"
                                         name="hora_fin"

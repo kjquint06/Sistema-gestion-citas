@@ -93,10 +93,7 @@ export function GraficaBarras({
     const alto = Math.max(180, datos.length * 44 + 40);
 
     return (
-        <div
-            className="w-full text-muted-foreground"
-            style={{ height: alto }}
-        >
+        <div className="w-full text-muted-foreground" style={{ height: alto }}>
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                     data={datos}

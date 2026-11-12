@@ -99,7 +99,10 @@ export default function AgendaCitas({
 
     const fechaObjeto = aFecha(fecha);
     const mesAnio = mayuscula(
-        fechaObjeto.toLocaleDateString('es', { month: 'long', year: 'numeric' }),
+        fechaObjeto.toLocaleDateString('es', {
+            month: 'long',
+            year: 'numeric',
+        }),
     );
     const fechaLarga = mayuscula(
         fechaObjeto.toLocaleDateString('es', {
@@ -275,7 +278,7 @@ export default function AgendaCitas({
                                         <div
                                             key={hora}
                                             style={{ height: ALTO_HORA }}
-                                            className="pr-2 pt-1 text-right text-xs text-muted-foreground"
+                                            className="pt-1 pr-2 text-right text-xs text-muted-foreground"
                                         >
                                             {String(hora).padStart(2, '0')}:00
                                         </div>
@@ -315,9 +318,13 @@ export default function AgendaCitas({
                                                     key={horario.inicio}
                                                     className="absolute inset-x-0 bg-background"
                                                     style={{
-                                                        top: topDe(horario.inicio),
+                                                        top: topDe(
+                                                            horario.inicio,
+                                                        ),
                                                         height: altoDe(
-                                                            aMinutos(horario.fin) -
+                                                            aMinutos(
+                                                                horario.fin,
+                                                            ) -
                                                                 aMinutos(
                                                                     horario.inicio,
                                                                 ),
@@ -330,7 +337,9 @@ export default function AgendaCitas({
                                                 <div
                                                     key={hora}
                                                     className="pointer-events-none absolute inset-x-0 border-t"
-                                                    style={{ top: i * ALTO_HORA }}
+                                                    style={{
+                                                        top: i * ALTO_HORA,
+                                                    }}
                                                 />
                                             ))}
 

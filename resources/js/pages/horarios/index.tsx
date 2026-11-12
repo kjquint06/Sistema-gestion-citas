@@ -142,7 +142,9 @@ export default function HorariosIndex({
                                                                     horario.hora_inicio
                                                                 }{' '}
                                                                 a{' '}
-                                                                {horario.hora_fin}
+                                                                {
+                                                                    horario.hora_fin
+                                                                }
                                                             </strong>{' '}
                                                             de {horario.medico}.
                                                             Esta acción no se

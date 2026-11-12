@@ -147,7 +147,10 @@ export default function ReportesCitas({
                         variant="outline"
                         disabled={cargando}
                         onClick={() =>
-                            consultar({ desde: inicioDeMes(), hasta: finDeMes() })
+                            consultar({
+                                desde: inicioDeMes(),
+                                hasta: finDeMes(),
+                            })
                         }
                     >
                         Este mes

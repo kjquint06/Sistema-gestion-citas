@@ -85,7 +85,10 @@ export default function DetalleCita({
                     etiqueta="Hora"
                     valor={`${cita.inicio} a ${cita.fin} (${cita.duracion} min)`}
                 />
-                <Fila etiqueta="Profesional" valor={cita.medico ?? 'Sin dato'} />
+                <Fila
+                    etiqueta="Profesional"
+                    valor={cita.medico ?? 'Sin dato'}
+                />
                 <Fila
                     etiqueta="Consultorio"
                     valor={cita.consultorio ?? 'Sin asignar'}

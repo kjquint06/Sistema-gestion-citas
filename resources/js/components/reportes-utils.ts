@@ -26,7 +26,11 @@ export type ReportesProps = {
 
 export const COLOR_PRINCIPAL = '#0d9488';
 
-export const ESTADOS_REPORTE: { clave: Estado; etiqueta: string; color: string }[] = [
+export const ESTADOS_REPORTE: {
+    clave: Estado;
+    etiqueta: string;
+    color: string;
+}[] = [
     { clave: 'pendiente', etiqueta: 'Pendientes', color: '#f59e0b' },
     { clave: 'confirmada', etiqueta: 'Confirmadas', color: '#3b82f6' },
     { clave: 'en_espera', etiqueta: 'En espera', color: '#f97316' },

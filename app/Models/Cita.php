@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property CarbonInterface $inicia_en
+ * @property CarbonInterface $termina_en
+ * @property CarbonInterface|null $hora_llegada
+ */
 class Cita extends Model
 {
     /** @use HasFactory<Factory<Cita>> */

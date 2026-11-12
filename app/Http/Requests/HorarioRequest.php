@@ -41,10 +41,13 @@ class HorarioRequest extends FormRequest
                     return;
                 }
 
+                $actual = $this->route('horario');
+                $ignorarId = $actual instanceof Horario ? $actual->id : null;
+
                 $cruce = Horario::query()
                     ->where('medico_id', $this->integer('medico_id'))
                     ->where('dia_semana', $this->integer('dia_semana'))
-                    ->when($this->route('horario'), fn ($query, $horario) => $query->where('id', '!=', $horario->id))
+                    ->when($ignorarId !== null, fn ($query) => $query->where('id', '!=', $ignorarId))
                     ->where('hora_inicio', '<', $this->input('hora_fin').':00')
                     ->where('hora_fin', '>', $this->input('hora_inicio').':00')
                     ->first();

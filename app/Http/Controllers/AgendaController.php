@@ -10,6 +10,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -163,7 +164,7 @@ class AgendaController extends Controller
     /**
      * Los 7 días de la semana (lunes a domingo) con su número de citas.
      *
-     * @param  \Illuminate\Support\Collection<int, Medico>  $medicos
+     * @param  Collection<int, Medico>  $medicos
      * @param  Builder<Cita>  $citasBase
      * @return array<int, array{fecha: string, dia_semana: int, citas: int, atiende: bool}>
      */
@@ -199,8 +200,8 @@ class AgendaController extends Controller
     /**
      * Resumen sobre la cuadrícula: citas, médicos, bloque estándar y disponibilidad calculada.
      *
-     * @param  \Illuminate\Support\Collection<int, Medico>  $columnas
-     * @param  \Illuminate\Support\Collection<int, Cita>  $citasActivas
+     * @param  Collection<int, Medico>  $columnas
+     * @param  Collection<int, Cita>  $citasActivas
      * @return array{citas: int, medicos: int, bloque_minutos: int|null, bloques_totales: int, bloques_libres: int}
      */
     private function resumen($columnas, $citasActivas, int $dia): array
@@ -238,8 +239,8 @@ class AgendaController extends Controller
     /**
      * Hora inicial y final de la cuadrícula, según horarios y citas del día.
      *
-     * @param  \Illuminate\Support\Collection<int, Medico>  $columnas
-     * @param  \Illuminate\Support\Collection<int, Cita>  $citasDia
+     * @param  Collection<int, Medico>  $columnas
+     * @param  Collection<int, Cita>  $citasDia
      * @return array{inicio: int, fin: int}
      */
     private function rangoHoras($columnas, $citasDia, int $dia): array
