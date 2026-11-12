@@ -18,6 +18,7 @@ type Medico = {
     especialidad_id: number;
     numero_colegiado: string;
     duracion_cita: number;
+    consultorio: string | null;
 };
 
 const claseSelect =
@@ -38,8 +39,8 @@ export default function MedicosEdit({
                 <div>
                     <h1 className="text-2xl font-bold">Editar médico</h1>
                     <p className="text-sm text-muted-foreground">
-                        Actualiza la especialidad, el colegiado y la duración de
-                        las citas.
+                        Actualiza la especialidad, el colegiado, la duración de
+                        las citas y el consultorio.
                     </p>
                 </div>
 
@@ -110,6 +111,19 @@ export default function MedicosEdit({
                                     <InputError
                                         message={errors.duracion_cita}
                                     />
+                                </div>
+
+                                <div className="grid gap-2 sm:col-span-2">
+                                    <Label htmlFor="consultorio">
+                                        Consultorio
+                                    </Label>
+                                    <Input
+                                        id="consultorio"
+                                        name="consultorio"
+                                        placeholder="Ej. Consultorio 101"
+                                        defaultValue={medico.consultorio ?? ''}
+                                    />
+                                    <InputError message={errors.consultorio} />
                                 </div>
                             </div>
 
