@@ -1,19 +1,10 @@
-import { Form, Head, Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Search, Trash2 } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Pencil, Plus, Search } from 'lucide-react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import MedicoController from '@/actions/App/Http/Controllers/MedicoController';
-import InputError from '@/components/input-error';
+import ConfirmarEliminar from '@/components/confirmar-eliminar';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { create, edit, index } from '@/routes/medicos';
 
@@ -24,63 +15,8 @@ type Medico = {
     especialidad: string;
     numero_colegiado: string;
     duracion_cita: number;
+    consultorio: string | null;
 };
-
-function EliminarMedico({ medico }: { medico: Medico }) {
-    const [abierto, setAbierto] = useState(false);
-
-    return (
-        <Dialog open={abierto} onOpenChange={setAbierto}>
-            <DialogTrigger asChild>
-                <Button variant="destructive" size="sm">
-                    <Trash2 size={14} />
-                    Eliminar
-                </Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogTitle>¿Eliminar al médico?</DialogTitle>
-                <DialogDescription>
-                    Se eliminará la ficha de médico de{' '}
-                    <strong>{medico.nombre}</strong>. Esta acción no se puede
-                    deshacer.
-                </DialogDescription>
-
-                <Form
-                    {...MedicoController.destroy.form(medico.id)}
-                    options={{ preserveScroll: true }}
-                    onSuccess={() => setAbierto(false)}
-                    className="space-y-4"
-                >
-                    {({ processing, errors, resetAndClearErrors }) => (
-                        <>
-                            <InputError message={errors.eliminar} />
-
-                            <DialogFooter className="gap-2">
-                                <DialogClose asChild>
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        onClick={() => resetAndClearErrors()}
-                                    >
-                                        Cancelar
-                                    </Button>
-                                </DialogClose>
-
-                                <Button
-                                    type="submit"
-                                    variant="destructive"
-                                    disabled={processing}
-                                >
-                                    Eliminar
-                                </Button>
-                            </DialogFooter>
-                        </>
-                    )}
-                </Form>
-            </DialogContent>
-        </Dialog>
-    );
-}
 
 export default function MedicosIndex({
     medicos,
@@ -169,6 +105,7 @@ export default function MedicosIndex({
                                 <th className="p-3 font-medium">
                                     Duración de cita
                                 </th>
+                                <th className="p-3 font-medium">Consultorio</th>
                                 <th className="p-3 text-right font-medium">
                                     Acciones
                                 </th>
@@ -178,7 +115,7 @@ export default function MedicosIndex({
                             {medicos.length === 0 ? (
                                 <tr>
                                     <td
-                                        colSpan={6}
+                                        colSpan={7}
                                         className="p-4 text-center text-muted-foreground"
                                     >
                                         {filtros.buscar !== ''
@@ -206,6 +143,13 @@ export default function MedicosIndex({
                                             {medico.duracion_cita} min
                                         </td>
                                         <td className="p-3">
+                                            {medico.consultorio ?? (
+                                                <span className="text-muted-foreground">
+                                                    Sin asignar
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="p-3">
                                             <div className="flex justify-end gap-2">
                                                 <Button
                                                     variant="secondary"
@@ -220,8 +164,22 @@ export default function MedicosIndex({
                                                     </Link>
                                                 </Button>
 
-                                                <EliminarMedico
-                                                    medico={medico}
+                                                <ConfirmarEliminar
+                                                    titulo="¿Eliminar al médico?"
+                                                    descripcion={
+                                                        <>
+                                                            Se eliminará la
+                                                            ficha de médico de{' '}
+                                                            <strong>
+                                                                {medico.nombre}
+                                                            </strong>
+                                                            . Esta acción no se
+                                                            puede deshacer.
+                                                        </>
+                                                    }
+                                                    accion={MedicoController.destroy.form(
+                                                        medico.id,
+                                                    )}
                                                 />
                                             </div>
                                         </td>

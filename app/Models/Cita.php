@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @property CarbonInterface $inicia_en
+ * @property CarbonInterface $termina_en
+ * @property CarbonInterface|null $hora_llegada
+ */
 class Cita extends Model
 {
     /** @use HasFactory<Factory<Cita>> */
@@ -17,11 +23,25 @@ class Cita extends Model
 
     public const ESTADO_CONFIRMADA = 'confirmada';
 
+    public const ESTADO_EN_ESPERA = 'en_espera';
+
+    public const ESTADO_EN_CONSULTA = 'en_consulta';
+
     public const ESTADO_ATENDIDA = 'atendida';
 
     public const ESTADO_CANCELADA = 'cancelada';
 
     public const ESTADO_INASISTENCIA = 'inasistencia';
+
+    public const ESTADOS = [
+        self::ESTADO_PENDIENTE,
+        self::ESTADO_CONFIRMADA,
+        self::ESTADO_EN_ESPERA,
+        self::ESTADO_EN_CONSULTA,
+        self::ESTADO_ATENDIDA,
+        self::ESTADO_CANCELADA,
+        self::ESTADO_INASISTENCIA,
+    ];
 
     protected $table = 'citas';
 
@@ -30,6 +50,7 @@ class Cita extends Model
         'medico_id',
         'inicia_en',
         'termina_en',
+        'hora_llegada',
         'estado',
         'motivo',
     ];
@@ -39,6 +60,7 @@ class Cita extends Model
         return [
             'inicia_en' => 'datetime',
             'termina_en' => 'datetime',
+            'hora_llegada' => 'datetime',
         ];
     }
 
