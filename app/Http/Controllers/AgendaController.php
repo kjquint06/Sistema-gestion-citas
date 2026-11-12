@@ -6,6 +6,7 @@ use App\Models\Cita;
 use App\Models\Horario;
 use App\Models\Medico;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -121,7 +122,7 @@ class AgendaController extends Controller
         ]);
     }
 
-    private function fecha(mixed $valor): Carbon
+    private function fecha(mixed $valor): CarbonInterface
     {
         if (is_string($valor) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $valor) === 1) {
             try {
@@ -166,7 +167,7 @@ class AgendaController extends Controller
      * @param  Builder<Cita>  $citasBase
      * @return array<int, array{fecha: string, dia_semana: int, citas: int, atiende: bool}>
      */
-    private function semana(Carbon $fecha, $medicos, Builder $citasBase): array
+    private function semana(CarbonInterface $fecha, $medicos, Builder $citasBase): array
     {
         $inicio = $fecha->copy()->startOfWeek(Carbon::MONDAY);
 
