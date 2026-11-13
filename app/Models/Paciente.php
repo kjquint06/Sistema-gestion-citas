@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property CarbonInterface|null $fecha_nacimiento
@@ -60,6 +61,18 @@ class Paciente extends Model
         return $this->hasMany(Antecedente::class);
     }
 
+    /**
+     * @return HasManyThrough<Consulta, Cita, $this>
+     */
+    public function consultas(): HasManyThrough
+    {
+        return $this->hasManyThrough(Consulta::class, Cita::class);
+    }
+
+    /**
+     * Indica si el paciente tiene citas o expediente (alergias o antecedentes).
+     * Si es así, no se puede eliminar.
+     */
     public function tieneDatosRelacionados(): bool
     {
         return $this->citas()->exists()

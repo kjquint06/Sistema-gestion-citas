@@ -7,6 +7,7 @@ use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\MedicoController;
+use App\Http\Controllers\Paciente\MiExpedienteController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuarioController;
@@ -21,6 +22,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Agenda: todos los roles (el paciente ve solo sus citas)
     Route::get('agenda', [AgendaController::class, 'index'])->name('agenda.index');
+    Route::middleware('rol:'.User::ROL_PACIENTE)->group(function () {
+        Route::get('mis-citas/crear', [CitaController::class, 'crearPaciente'])
+            ->name('mis-citas.crear');
+
+        Route::post('mis-citas', [CitaController::class, 'guardarPaciente'])
+            ->name('mis-citas.guardar');
+
+        Route::get('mis-citas/{cita}/reprogramar', [CitaController::class, 'reprogramarPaciente'])
+            ->name('mis-citas.reprogramar');
+
+        Route::put('mis-citas/{cita}', [CitaController::class, 'actualizarPaciente'])
+            ->name('mis-citas.actualizar');
+
+        Route::patch('mis-citas/{cita}/cancelar', [CitaController::class, 'cancelarPaciente'])
+            ->name('mis-citas.cancelar');
+
+        Route::get('mis-citas/disponibilidad', [CitaController::class, 'disponibilidadPaciente'])
+            ->name('mis-citas.disponibilidad');
+
+        Route::get('mi-expediente', [MiExpedienteController::class, 'index'])
+            ->name('mi-expediente.index');
+    });
 
     // Pacientes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
