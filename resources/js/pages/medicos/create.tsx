@@ -235,6 +235,18 @@ export default function MedicosCreate({
                                         message={errors.duracion_cita}
                                     />
                                 </div>
+
+                                <div className="grid gap-2 sm:col-span-2">
+                                    <Label htmlFor="consultorio">
+                                        Consultorio
+                                    </Label>
+                                    <Input
+                                        id="consultorio"
+                                        name="consultorio"
+                                        placeholder="Ej. Consultorio 101"
+                                    />
+                                    <InputError message={errors.consultorio} />
+                                </div>
                             </div>
 
                             <div className="flex items-center gap-3">

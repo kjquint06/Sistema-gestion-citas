@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property CarbonInterface|null $fecha_nacimiento
+ */
 class Paciente extends Model
 {
     protected $fillable = [
@@ -13,8 +17,7 @@ class Paciente extends Model
         'fecha_nacimiento',
         'sexo',
         'direccion',
-        'contacto_emergencia_nombre',
-        'contacto_emergencia_telefono',
+        'contacto_emergencia',
     ];
 
     protected function casts(): array

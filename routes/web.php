@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ReporteController;
@@ -36,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('disponibilidad', [MedicoController::class, 'disponibilidad'])->name('disponibilidad.index');
     });
 
-    // Médicos y especialidades: solo administrador
+    // Médicos, especialidades, horarios y citas: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
         Route::resource('medicos', MedicoController::class)
             ->parameters(['medicos' => 'medico'])
@@ -44,6 +46,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('especialidades', EspecialidadController::class)
             ->parameters(['especialidades' => 'especialidad'])
             ->except('show');
+        Route::resource('horarios', HorarioController::class)
+            ->parameters(['horarios' => 'horario'])
+            ->except('show');
+
+        // El listado de citas es la agenda (agenda.index)
+        Route::resource('citas', CitaController::class)
+            ->parameters(['citas' => 'cita'])
+            ->except(['index', 'show']);
+        Route::patch('citas/{cita}/cancelar', [CitaController::class, 'cancelar'])->name('citas.cancelar');
     });
 
     // Usuarios: solo administrador (crear, editar y eliminar cuentas)
