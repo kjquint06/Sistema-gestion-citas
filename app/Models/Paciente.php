@@ -13,7 +13,8 @@ class Paciente extends Model
         'fecha_nacimiento',
         'sexo',
         'direccion',
-        'contacto_emergencia',
+        'contacto_emergencia_nombre',
+        'contacto_emergencia_telefono',
     ];
 
     protected function casts(): array

@@ -100,7 +100,9 @@ export function AppSidebar() {
     const { auth } = usePage<{ auth: Auth }>().props;
 
     const items = todosLosItems.filter(
-        (item) => !item.roles || item.roles.includes(auth.user.rol),
+    (item) =>
+        !item.roles ||
+        (auth.user && item.roles.includes(auth.user.rol)),
     );
 
     return (

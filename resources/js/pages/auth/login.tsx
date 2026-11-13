@@ -187,9 +187,12 @@ export default function Login({ status, canResetPassword }: Props) {
 
                         <div className="mt-8 border-t border-slate-200 pt-6 text-sm text-slate-500">
                             ¿Es tu primera vez?{' '}
-                            <span className="font-semibold text-teal-700">
-                                Crear cuenta de paciente →
-                            </span>
+                            <TextLink
+                                href="/register"
+                                className="font-semibold text-teal-700 no-underline"
+                            >
+                                Crea una cuenta de paciente →
+                            </TextLink>
                         </div>
                     </div>
                 </main>
