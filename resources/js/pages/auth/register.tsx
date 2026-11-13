@@ -17,7 +17,6 @@ export default function Register() {
             <Head title="Registro de pacientes" />
 
             <div className="grid min-h-screen lg:grid-cols-[0.8fr_1.2fr]">
-
                 {/* Panel izquierdo */}
                 <aside
                     className="relative hidden flex-col justify-between p-12 text-white lg:flex"
@@ -47,8 +46,8 @@ export default function Register() {
                         </h1>
 
                         <p className="mt-6 text-sm leading-relaxed text-slate-300">
-                            Crea tu cuenta y disfruta de una experiencia
-                            más sencilla para gestionar tu atención médica.
+                            Crea tu cuenta y disfruta de una experiencia más
+                            sencilla para gestionar tu atención médica.
                         </p>
 
                         <div className="mt-10 space-y-6">
@@ -98,7 +97,6 @@ export default function Register() {
                 {/* Panel del formulario */}
                 <main className="flex justify-center bg-slate-50 px-5 py-10 sm:px-10">
                     <div className="my-auto w-full max-w-2xl">
-
                         <div className="mb-8">
                             <p className="text-xs font-bold tracking-widest text-teal-700 uppercase">
                                 Registro de pacientes
@@ -109,14 +107,18 @@ export default function Register() {
                             </h2>
 
                             <p className="mt-2 text-sm text-slate-500">
-                                Completa tus datos para registrarte en nuestra clínica.
+                                Completa tus datos para registrarte en nuestra
+                                clínica.
                             </p>
                         </div>
 
                         <Form
                             action="/register"
                             method="post"
-                            resetOnSuccess={['password', 'password_confirmation']}
+                            resetOnSuccess={[
+                                'password',
+                                'password_confirmation',
+                            ]}
                             className="space-y-7"
                         >
                             {({ processing, errors }) => (
@@ -128,14 +130,17 @@ export default function Register() {
                                                 Crear mi cuenta
                                             </h3>
                                             <p className="text-xs text-slate-500">
-                                                Información de acceso y contacto.
+                                                Información de acceso y
+                                                contacto.
                                             </p>
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
-
                                             <div className="grid gap-2">
-                                                <label htmlFor="name" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="name"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Nombre completo *
                                                 </label>
                                                 <input
@@ -147,11 +152,16 @@ export default function Register() {
                                                     placeholder="Tu nombre completo"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.name} />
+                                                <InputError
+                                                    message={errors.name}
+                                                />
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <label htmlFor="telefono" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="telefono"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Teléfono
                                                 </label>
                                                 <input
@@ -162,11 +172,16 @@ export default function Register() {
                                                     placeholder="Tu número de teléfono"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.telefono} />
+                                                <InputError
+                                                    message={errors.telefono}
+                                                />
                                             </div>
 
                                             <div className="grid gap-2 sm:col-span-2">
-                                                <label htmlFor="email" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="email"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Correo electrónico *
                                                 </label>
                                                 <input
@@ -178,7 +193,9 @@ export default function Register() {
                                                     placeholder="nombre@correo.com"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.email} />
+                                                <InputError
+                                                    message={errors.email}
+                                                />
                                             </div>
                                         </div>
                                     </section>
@@ -192,14 +209,17 @@ export default function Register() {
                                                 Información personal
                                             </h3>
                                             <p className="text-xs text-slate-500">
-                                                Datos necesarios para tu ficha de paciente.
+                                                Datos necesarios para tu ficha
+                                                de paciente.
                                             </p>
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
-
                                             <div className="grid gap-2">
-                                                <label htmlFor="fecha_nacimiento" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="fecha_nacimiento"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Fecha de nacimiento *
                                                 </label>
                                                 <input
@@ -207,14 +227,23 @@ export default function Register() {
                                                     name="fecha_nacimiento"
                                                     type="date"
                                                     required
-                                                    max={new Date().toLocaleDateString('en-CA')}
+                                                    max={new Date().toLocaleDateString(
+                                                        'en-CA',
+                                                    )}
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.fecha_nacimiento} />
+                                                <InputError
+                                                    message={
+                                                        errors.fecha_nacimiento
+                                                    }
+                                                />
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <label htmlFor="sexo" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="sexo"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Sexo *
                                                 </label>
                                                 <select
@@ -227,14 +256,23 @@ export default function Register() {
                                                     <option value="" disabled>
                                                         Selecciona una opción
                                                     </option>
-                                                    <option value="Femenino">Femenino</option>
-                                                    <option value="Masculino">Masculino</option>
+                                                    <option value="Femenino">
+                                                        Femenino
+                                                    </option>
+                                                    <option value="Masculino">
+                                                        Masculino
+                                                    </option>
                                                 </select>
-                                                <InputError message={errors.sexo} />
+                                                <InputError
+                                                    message={errors.sexo}
+                                                />
                                             </div>
 
                                             <div className="grid gap-2 sm:col-span-2">
-                                                <label htmlFor="direccion" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="direccion"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Dirección
                                                 </label>
                                                 <textarea
@@ -244,7 +282,9 @@ export default function Register() {
                                                     placeholder="Colonia, ciudad y departamento"
                                                     className="resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.direccion} />
+                                                <InputError
+                                                    message={errors.direccion}
+                                                />
                                             </div>
                                         </div>
                                     </section>
@@ -258,13 +298,17 @@ export default function Register() {
                                                 Contacto de emergencia
                                             </h3>
                                             <p className="text-xs text-slate-500">
-                                                Persona a quien contactar en caso de emergencia.
+                                                Persona a quien contactar en
+                                                caso de emergencia.
                                             </p>
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
                                             <div className="grid gap-2">
-                                                <label htmlFor="contacto_emergencia_nombre" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="contacto_emergencia_nombre"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Nombre y relación
                                                 </label>
                                                 <input
@@ -274,11 +318,18 @@ export default function Register() {
                                                     placeholder="Nombre y parentesco"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.contacto_emergencia_nombre} />
+                                                <InputError
+                                                    message={
+                                                        errors.contacto_emergencia_nombre
+                                                    }
+                                                />
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <label htmlFor="contacto_emergencia_telefono" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="contacto_emergencia_telefono"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Teléfono de emergencia
                                                 </label>
                                                 <input
@@ -288,7 +339,11 @@ export default function Register() {
                                                     placeholder="Número de contacto"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.contacto_emergencia_telefono} />
+                                                <InputError
+                                                    message={
+                                                        errors.contacto_emergencia_telefono
+                                                    }
+                                                />
                                             </div>
                                         </div>
                                     </section>
@@ -302,13 +357,17 @@ export default function Register() {
                                                 Seguridad de la cuenta
                                             </h3>
                                             <p className="text-xs text-slate-500">
-                                                Crea una contraseña para proteger tu cuenta.
+                                                Crea una contraseña para
+                                                proteger tu cuenta.
                                             </p>
                                         </div>
 
                                         <div className="grid gap-4 sm:grid-cols-2">
                                             <div className="grid gap-2">
-                                                <label htmlFor="password" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="password"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Contraseña *
                                                 </label>
                                                 <input
@@ -320,11 +379,16 @@ export default function Register() {
                                                     placeholder="Crear contraseña"
                                                     className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20"
                                                 />
-                                                <InputError message={errors.password} />
+                                                <InputError
+                                                    message={errors.password}
+                                                />
                                             </div>
 
                                             <div className="grid gap-2">
-                                                <label htmlFor="password_confirmation" className="text-xs font-semibold text-slate-700">
+                                                <label
+                                                    htmlFor="password_confirmation"
+                                                    className="text-xs font-semibold text-slate-700"
+                                                >
                                                     Confirmar contraseña *
                                                 </label>
                                                 <input
@@ -351,18 +415,24 @@ export default function Register() {
                                                 className="mt-0.5 size-4 shrink-0 accent-teal-700"
                                             />
                                             <span>
-                                                He leído y acepto las políticas de privacidad y el tratamiento de mis datos personales.
+                                                He leído y acepto las políticas
+                                                de privacidad y el tratamiento
+                                                de mis datos personales.
                                             </span>
                                         </label>
-                                        <InputError message={errors.privacidad} />
+                                        <InputError
+                                            message={errors.privacidad}
+                                        />
                                     </div>
 
                                     {/* Información */}
                                     <div className="flex gap-3 rounded-xl bg-teal-50 p-4">
                                         <Info className="mt-0.5 size-4 shrink-0 text-teal-700" />
                                         <p className="text-xs leading-relaxed text-teal-900">
-                                            El registro público crea únicamente cuentas de pacientes.
-                                            Los perfiles del personal de la clínica son administrados internamente.
+                                            El registro público crea únicamente
+                                            cuentas de pacientes. Los perfiles
+                                            del personal de la clínica son
+                                            administrados internamente.
                                         </p>
                                     </div>
 

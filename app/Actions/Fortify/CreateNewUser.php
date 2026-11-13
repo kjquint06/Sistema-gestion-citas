@@ -43,6 +43,8 @@ class CreateNewUser implements CreatesNewUsers
                 'rol' => User::ROL_PACIENTE,
             ]);
 
+            $usuario->markEmailAsVerified();
+
             Paciente::create([
                 'usuario_id' => $usuario->id,
                 'fecha_nacimiento' => $input['fecha_nacimiento'],

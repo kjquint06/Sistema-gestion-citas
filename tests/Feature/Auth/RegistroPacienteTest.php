@@ -25,12 +25,13 @@ test('la pantalla de registro se puede abrir', function () {
 
 test('un paciente nuevo se registra y se crean su usuario y su ficha', function () {
     $response = $this->post(route('register.store'), datosRegistroPaciente());
-   
+
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
 
     $usuario = User::where('email', 'elena@example.com')->firstOrFail();
     expect($usuario->rol)->toBe(User::ROL_PACIENTE);
+    expect($usuario->hasVerifiedEmail())->toBeTrue();   // <-- aquí
 
     $this->assertDatabaseHas('pacientes', [
         'usuario_id' => $usuario->id,
