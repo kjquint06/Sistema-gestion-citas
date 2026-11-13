@@ -6,6 +6,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property CarbonInterface|null $fecha_nacimiento
@@ -57,5 +58,13 @@ class Paciente extends Model
     public function antecedentes(): HasMany
     {
         return $this->hasMany(Antecedente::class);
+    }
+
+    /**
+     * @return HasManyThrough<Consulta, Cita, $this>
+     */
+    public function consultas(): HasManyThrough
+    {
+        return $this->hasManyThrough(Consulta::class, Cita::class);
     }
 }

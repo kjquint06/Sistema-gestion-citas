@@ -50,7 +50,7 @@ const todosLosItems: ItemConRoles[] = [
         title: 'Agenda de Citas',
         href: agenda(),
         icon: CalendarDays,
-        roles: [ROL.paciente, ROL.recepcionista, ROL.admin],
+        roles: [ROL.recepcionista, ROL.admin],
     },
     {
         title: 'Pacientes',
@@ -59,10 +59,22 @@ const todosLosItems: ItemConRoles[] = [
         roles: [ROL.medico, ROL.recepcionista, ROL.admin],
     },
     {
+        title: 'Agendar Cita',
+        href: '/mis-citas/crear',
+        icon: CalendarDays,
+        roles: [ROL.paciente],
+    },
+    {
+        title: 'Mi Expediente',
+        href: '/mi-expediente',
+        icon: FileText,
+        roles: [ROL.paciente],
+    },
+    {
         title: 'Expedientes clinicos',
         href: expedientes(),
         icon: FileText,
-        roles: [ROL.medico, ROL.paciente, ROL.admin],
+        roles: [ROL.medico, ROL.admin],
     },
     {
         title: 'Médicos',
