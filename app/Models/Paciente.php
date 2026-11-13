@@ -15,6 +15,7 @@ class Paciente extends Model
 {
     protected $fillable = [
         'usuario_id',
+        'documento',
         'fecha_nacimiento',
         'sexo',
         'direccion',
@@ -66,5 +67,16 @@ class Paciente extends Model
     public function consultas(): HasManyThrough
     {
         return $this->hasManyThrough(Consulta::class, Cita::class);
+    }
+
+    /**
+     * Indica si el paciente tiene citas o expediente (alergias o antecedentes).
+     * Si es así, no se puede eliminar.
+     */
+    public function tieneDatosRelacionados(): bool
+    {
+        return $this->citas()->exists()
+            || $this->alergias()->exists()
+            || $this->antecedentes()->exists();
     }
 }

@@ -48,6 +48,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Pacientes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
         Route::get('pacientes', [PacienteController::class, 'index'])->name('pacientes.index');
+
+    });
+
+    // Gestión de pacientes: recepcionista y administrador
+    Route::middleware('rol:'.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
+        Route::resource('pacientes', PacienteController::class)
+            ->parameters(['pacientes' => 'paciente'])
+            ->except('index');
     });
 
     // Expedientes: médico y paciente (el paciente ve solo el suyo)
