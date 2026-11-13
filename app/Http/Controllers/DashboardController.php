@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Paciente\MisCitasController;
 use App\Models\Cita;
 use App\Models\Especialidad;
 use App\Models\Medico;
@@ -123,6 +124,13 @@ class DashboardController extends Controller
                     'hasta' => $fechaFin,
                 ],
             ]);
+        }
+
+        if ($request->user()->rol === User::ROL_PACIENTE) {
+            return Inertia::render(
+                'pacientes/mis-citas',
+                app(MisCitasController::class)->datos($request)
+            );
         }
 
         // Dashboard para usuarios que no son administradores
