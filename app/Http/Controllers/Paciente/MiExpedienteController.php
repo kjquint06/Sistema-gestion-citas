@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Paciente;
 
 use App\Http\Controllers\Controller;
-use App\Models\Consulta;
 use App\Models\Alergia;
 use App\Models\Antecedente;
+use App\Models\Consulta;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
