@@ -18,6 +18,7 @@ class PacienteSeeder extends Seeder
             [
                 'usuario' => ['name' => 'Paciente Prueba', 'email' => 'paciente@clinica.test'],
                 'datos' => [
+                    'documento' => '0501-1995-01234',
                     'fecha_nacimiento' => '1995-03-12',
                     'sexo' => 'Femenino',
                     'direccion' => 'Col. Los Andes, San Pedro Sula',
@@ -31,6 +32,7 @@ class PacienteSeeder extends Seeder
             [
                 'usuario' => ['name' => 'Carlos Mejía', 'email' => 'carlos.mejia@clinica.test'],
                 'datos' => [
+                    'documento' => '0501-1988-04567',
                     'fecha_nacimiento' => '1988-07-25',
                     'sexo' => 'Masculino',
                     'direccion' => 'Barrio Guamilito, San Pedro Sula',
@@ -43,6 +45,7 @@ class PacienteSeeder extends Seeder
             [
                 'usuario' => ['name' => 'Lucía Fernández', 'email' => 'lucia.fernandez@clinica.test'],
                 'datos' => [
+                    'documento' => '0502-2001-02345',
                     'fecha_nacimiento' => '2001-11-02',
                     'sexo' => 'Femenino',
                     'direccion' => 'Res. Las Colinas, Choloma',

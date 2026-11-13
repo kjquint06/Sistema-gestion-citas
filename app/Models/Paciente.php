@@ -14,6 +14,7 @@ class Paciente extends Model
 {
     protected $fillable = [
         'usuario_id',
+        'documento',
         'fecha_nacimiento',
         'sexo',
         'direccion',
@@ -57,5 +58,12 @@ class Paciente extends Model
     public function antecedentes(): HasMany
     {
         return $this->hasMany(Antecedente::class);
+    }
+
+    public function tieneDatosRelacionados(): bool
+    {
+        return $this->citas()->exists()
+            || $this->alergias()->exists()
+            || $this->antecedentes()->exists();
     }
 }
