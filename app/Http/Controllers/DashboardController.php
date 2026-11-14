@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Paciente\MisCitasController;
+use App\Http\Controllers\Recepcion\PanelController;
 use App\Models\Cita;
 use App\Models\Especialidad;
 use App\Models\Medico;
@@ -130,6 +131,12 @@ class DashboardController extends Controller
             return Inertia::render(
                 'pacientes/mis-citas',
                 app(MisCitasController::class)->datos($request)
+            );
+        }
+        if ($request->user()->rol === User::ROL_RECEPCIONISTA) {
+            return Inertia::render(
+                'recepcion/panel',
+                app(PanelController::class)->datos()
             );
         }
 
