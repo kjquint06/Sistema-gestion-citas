@@ -1,5 +1,5 @@
 import { router, usePage } from '@inertiajs/react';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, Download } from 'lucide-react';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import InputError from '@/components/input-error';
@@ -22,7 +22,7 @@ import type { ReportesProps } from '@/components/reportes-utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { index } from '@/routes/reportes';
+import { index, pdf } from '@/routes/reportes';
 
 export type { ReportesProps } from '@/components/reportes-utils';
 
@@ -167,6 +167,14 @@ export default function ReportesCitas({
                         }
                     >
                         Este año
+                    </Button>
+                    <Button type="button" variant="secondary" asChild>
+                        <a
+                            href={`${pdf().url}?desde=${filtros.desde}&hasta=${filtros.hasta}`}
+                        >
+                            <Download className="size-4" />
+                            Descargar PDF
+                        </a>
                     </Button>
                 </div>
             </form>
