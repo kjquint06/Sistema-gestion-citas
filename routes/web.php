@@ -98,6 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Reportes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
         Route::get('reportes', [ReporteController::class, 'index'])->name('reportes.index');
+        Route::get('reportes/pdf', [ReporteController::class, 'pdf'])->name('reportes.pdf');
     });
 });
 

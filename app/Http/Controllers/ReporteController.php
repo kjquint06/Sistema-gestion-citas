@@ -6,8 +6,10 @@ use App\Http\Requests\ReporteRequest;
 use App\Models\Cita;
 use App\Models\Medico;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Response as RespuestaHttp;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,6 +26,41 @@ class ReporteController extends Controller
         $desde = $request->desde();
         $hasta = $request->hasta();
 
+        return Inertia::render('reportes/index', [
+            'rol' => $usuario->rol,
+            'filtros' => ['desde' => $desde, 'hasta' => $hasta],
+            ...$this->datos($desde, $hasta),
+        ]);
+    }
+
+    /**
+     * Descarga el reporte del rango elegido en PDF.
+     */
+    public function pdf(ReporteRequest $request): RespuestaHttp
+    {
+        $desde = $request->desde();
+        $hasta = $request->hasta();
+
+        $pdf = Pdf::loadView('reportes.pdf', [
+            'titulo' => 'Reporte de citas',
+            'generado' => now()->format('d/m/Y H:i'),
+            'filtros' => [
+                'desde' => Carbon::parse($desde)->format('d/m/Y'),
+                'hasta' => Carbon::parse($hasta)->format('d/m/Y'),
+            ],
+            ...$this->datos($desde, $hasta),
+        ]);
+
+        return $pdf->download("reporte-citas-{$desde}-al-{$hasta}.pdf");
+    }
+
+    /**
+     * Datos del reporte, compartidos por la página y el PDF.
+     *
+     * @return array<string, mixed>
+     */
+    private function datos(string $desde, string $hasta): array
+    {
         /** @param Builder<Cita> $query */
         $enRango = fn (Builder $query): Builder => $query
             ->whereDate('inicia_en', '>=', $desde)
@@ -44,15 +81,13 @@ class ReporteController extends Controller
             $porEstado[$estado] = $conteos[$estado] ?? 0;
         }
 
-        return Inertia::render('reportes/index', [
-            'rol' => $usuario->rol,
-            'filtros' => ['desde' => $desde, 'hasta' => $hasta],
+        return [
             'total' => Cita::query()->tap($enRango)->count(),
             'porEstado' => $porEstado,
             'porMedico' => $this->porMedico($enRango),
             'porEspecialidad' => $this->porEspecialidad($enRango),
             'porMes' => $this->porMes($enRango, $desde, $hasta),
-        ]);
+        ];
     }
 
     /**
