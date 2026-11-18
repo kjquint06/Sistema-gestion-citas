@@ -47,4 +47,12 @@ class Medico extends Model
     {
         return $this->hasMany(Horario::class);
     }
+
+    /**
+     * @return HasMany<Bloqueo, $this>
+     */
+    public function bloqueos(): HasMany
+    {
+        return $this->hasMany(Bloqueo::class);
+    }
 }
