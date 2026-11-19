@@ -1,6 +1,7 @@
 import { Link, usePage } from '@inertiajs/react';
 import {
     CalendarDays,
+    ClipboardList,
     Clock,
     FileText,
     LayoutGrid,
@@ -23,9 +24,11 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { index as agenda } from '@/routes/agenda';
+import { index as consultas } from '@/routes/consultas';
 import { index as disponibilidad } from '@/routes/disponibilidad';
 import { index as expedientes } from '@/routes/expedientes';
 import { index as medicos } from '@/routes/medicos';
+import { index as misPacientes } from '@/routes/mis-pacientes';
 import { index as especialidades } from '@/routes/especialidades';
 import { index as pacientes } from '@/routes/pacientes';
 import { index as usuarios } from '@/routes/usuarios';
@@ -45,7 +48,37 @@ type ItemConRoles = NavItem & { roles?: string[] };
 
 // Si un item no tiene "roles", lo ven todos. Debe coincidir con routes/web.php
 const todosLosItems: ItemConRoles[] = [
-    { title: 'Panel General', href: dashboard(), icon: LayoutGrid },
+    {
+        title: 'Panel General',
+        href: dashboard(),
+        icon: LayoutGrid,
+        roles: [ROL.paciente, ROL.recepcionista, ROL.admin],
+    },
+    // Menú del médico (en este orden): Agenda semanal, Consultas, Mis pacientes, Mis horarios
+    {
+        title: 'Agenda semanal',
+        href: agenda(),
+        icon: CalendarDays,
+        roles: [ROL.medico],
+    },
+    {
+        title: 'Consultas',
+        href: consultas(),
+        icon: ClipboardList,
+        roles: [ROL.medico],
+    },
+    {
+        title: 'Mis pacientes',
+        href: misPacientes(),
+        icon: Users,
+        roles: [ROL.medico],
+    },
+    {
+        title: 'Mis horarios',
+        href: disponibilidad(),
+        icon: Clock,
+        roles: [ROL.medico],
+    },
     {
         title: 'Agenda de Citas',
         href: agenda(),
@@ -56,7 +89,7 @@ const todosLosItems: ItemConRoles[] = [
         title: 'Pacientes',
         href: pacientes(),
         icon: Users,
-        roles: [ROL.medico, ROL.recepcionista, ROL.admin],
+        roles: [ROL.recepcionista, ROL.admin],
     },
     {
         title: 'Agendar Cita',
@@ -74,7 +107,7 @@ const todosLosItems: ItemConRoles[] = [
         title: 'Expedientes clinicos',
         href: expedientes(),
         icon: FileText,
-        roles: [ROL.medico, ROL.admin],
+        roles: [ROL.admin],
     },
     {
         title: 'Médicos',
@@ -92,7 +125,7 @@ const todosLosItems: ItemConRoles[] = [
         title: 'Disponibilidad',
         href: disponibilidad(),
         icon: Clock,
-        roles: [ROL.medico, ROL.admin],
+        roles: [ROL.admin],
     },
     {
         title: 'Usuarios',
@@ -104,7 +137,7 @@ const todosLosItems: ItemConRoles[] = [
         title: 'Reportes',
         href: reportes(),
         icon: TrendingUp,
-        roles: [ROL.medico, ROL.recepcionista, ROL.admin],
+        roles: [ROL.recepcionista, ROL.admin],
     },
 ];
 

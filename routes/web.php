@@ -45,6 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('mi-expediente.index');
     });
 
+    // Espacio del médico: solo el médico (rutas base, otros issues las completan)
+    Route::middleware('rol:'.User::ROL_MEDICO)->group(function () {
+        Route::inertia('consultas', 'consultas/index')->name('consultas.index');
+        Route::inertia('mis-pacientes', 'mis-pacientes/index')->name('mis-pacientes.index');
+    });
+
     // Pacientes: personal de la clínica
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
         Route::get('pacientes', [PacienteController::class, 'index'])->name('pacientes.index');

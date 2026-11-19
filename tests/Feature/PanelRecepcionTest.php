@@ -85,7 +85,8 @@ test('los otros roles no ven el panel de recepción', function () {
         ->get(route('dashboard'))
         ->assertInertia(fn (Assert $page) => $page->component('admin/dashboard'));
 
+    // El médico no tiene panel general: entra directo a la agenda semanal
     $this->actingAs($medico)
         ->get(route('dashboard'))
-        ->assertInertia(fn (Assert $page) => $page->component('dashboard'));
+        ->assertRedirect(route('agenda.index'));
 });

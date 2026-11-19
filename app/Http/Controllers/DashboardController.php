@@ -8,14 +8,20 @@ use App\Models\Cita;
 use App\Models\Especialidad;
 use App\Models\Medico;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): Response|RedirectResponse
     {
+        // El médico entra directo a la Agenda semanal
+        if ($request->user()->rol === User::ROL_MEDICO) {
+            return redirect()->route('agenda.index');
+        }
+
         if ($request->user()->rol === User::ROL_ADMIN) {
 
             // Obtener médicos con su usuario y especialidad
