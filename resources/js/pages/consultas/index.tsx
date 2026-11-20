@@ -3,7 +3,6 @@ import { index as consultas, iniciar, show } from '@/routes/consultas';
 
 import { Card, CardContent } from '@/components/ui/card';
 
-
 type CitaHoy = {
     id: number;
     hora: string;
@@ -20,18 +19,16 @@ const estados: Record<string, { texto: string; clase: string }> = {
     pendiente: { texto: 'Pendiente', clase: 'bg-slate-100 text-slate-700' },
     confirmada: { texto: 'Confirmada', clase: 'bg-teal-50 text-teal-700' },
     en_espera: { texto: 'En espera', clase: 'bg-amber-100 text-amber-800' },
-    en_consulta: { texto: 'En consulta', clase: 'bg-indigo-100 text-indigo-800' },
+    en_consulta: {
+        texto: 'En consulta',
+        clase: 'bg-indigo-100 text-indigo-800',
+    },
     atendida: { texto: 'Atendida', clase: 'bg-green-100 text-green-800' },
-    inasistencia: { texto: 'Inasistencia', clase: 'bg-orange-100 text-orange-800' },
+    inasistencia: {
+        texto: 'Inasistencia',
+        clase: 'bg-orange-100 text-orange-800',
+    },
 };
-
-const ESTADOS_INICIABLES = [
-    'pendiente',
-    'confirmada',
-    'en_espera',
-    'en_consulta',
-];
-
 
 export default function ConsultasIndex({ citasHoy }: Props) {
     return (
@@ -69,7 +66,8 @@ export default function ConsultasIndex({ citasHoy }: Props) {
                                                     {cita.paciente}
                                                 </p>
                                                 <p className="text-sm text-slate-500">
-                                                    {cita.motivo ?? 'Sin motivo'}
+                                                    {cita.motivo ??
+                                                        'Sin motivo'}
                                                 </p>
                                             </div>
                                         </div>
@@ -86,27 +84,32 @@ export default function ConsultasIndex({ citasHoy }: Props) {
 
                                         {cita.estado === 'en_consulta' ? (
                                             <Link
-                                            href={show(cita.id)}
-                                            className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
+                                                href={show(cita.id)}
+                                                className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
                                             >
                                                 Continuar consulta
-                                                
                                             </Link>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    disabled={cita.estado !== 'en_espera'}
-                                                    title={
-                                                        cita.estado !== 'en_espera'
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                disabled={
+                                                    cita.estado !== 'en_espera'
+                                                }
+                                                title={
+                                                    cita.estado !== 'en_espera'
                                                         ? 'Disponible cuando el paciente esté en espera'
                                                         : undefined
-                                                    }
-                                                    onClick={() => router.patch(iniciar.url(cita.id))}
-                                                    className="rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition enabled:hover:bg-[#0d655e] disabled:cursor-not-allowed disabled:bg-slate-300"
-                                                    >
-                                                        Iniciar consulta
-                                                </button>
-                                            )}
+                                                }
+                                                onClick={() =>
+                                                    router.patch(
+                                                        iniciar.url(cita.id),
+                                                    )
+                                                }
+                                                className="rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition enabled:hover:bg-[#0d655e] disabled:cursor-not-allowed disabled:bg-slate-300"
+                                            >
+                                                Iniciar consulta
+                                            </button>
+                                        )}
                                     </li>
                                 ))}
                             </ul>

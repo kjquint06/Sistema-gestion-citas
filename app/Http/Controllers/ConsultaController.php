@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Cita;
+use App\Http\Requests\GuardarConsultaRequest;
 use App\Models\Alergia;
 use App\Models\Antecedente;
-use App\Models\Paciente;
-use App\Models\Medico;
+use App\Models\Cita;
 use Illuminate\Http\RedirectResponse;
-use Inertia\Response;
-use App\Models\User;
-use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\GuardarConsultaRequest;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ConsultaController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $medico = $request->user()->medico;
 
-        abort_if($medico === null, 403);
+        if ($medico === null) {
+            return Inertia::render('consultas/index', ['citasHoy' => []]);
+        }
 
         $citasHoy = $medico->citas()
             ->with('paciente.usuario')
@@ -39,7 +38,7 @@ class ConsultaController extends Controller
             ]);
 
         return Inertia::render('consultas/index', [
-        'citasHoy' => $citasHoy,
+            'citasHoy' => $citasHoy,
         ]);
     }
 
@@ -47,7 +46,6 @@ class ConsultaController extends Controller
     {
         $this->autorizarMedico($request, $cita);
 
-        
         $iniciables = [
             Cita::ESTADO_PENDIENTE,
             Cita::ESTADO_CONFIRMADA,
@@ -68,11 +66,10 @@ class ConsultaController extends Controller
     public function show(Request $request, Cita $cita): Response|RedirectResponse
     {
         $this->autorizarMedico($request, $cita);
-        
+
         if ($cita->estado !== Cita::ESTADO_EN_CONSULTA) {
             return to_route('consultas.index');
         }
-
 
         $cita->load(
             'paciente.usuario',

@@ -45,7 +45,6 @@ const GRAVEDADES = [
     { valor: 'grave', texto: 'Grave' },
 ];
 
-
 type Props = {
     cita: {
         id: number;
@@ -168,54 +167,54 @@ export default function ConsultaShow({
                 i === indice ? { ...fila, [campo]: valor } : fila,
             ),
         );
-    
+
     const agregarAntecedente = () =>
-    setData('antecedentes_nuevos', [
-        ...data.antecedentes_nuevos,
-        { tipo: 'personal', fecha: '', descripcion: '' },
-    ]);
+        setData('antecedentes_nuevos', [
+            ...data.antecedentes_nuevos,
+            { tipo: 'personal', fecha: '', descripcion: '' },
+        ]);
 
-const quitarAntecedente = (indice: number) =>
-    setData(
-        'antecedentes_nuevos',
-        data.antecedentes_nuevos.filter((_, i) => i !== indice),
-    );
+    const quitarAntecedente = (indice: number) =>
+        setData(
+            'antecedentes_nuevos',
+            data.antecedentes_nuevos.filter((_, i) => i !== indice),
+        );
 
-const cambiarAntecedente = (
-    indice: number,
-    campo: keyof AntecedenteFila,
-    valor: string,
-) =>
-    setData(
-        'antecedentes_nuevos',
-        data.antecedentes_nuevos.map((fila, i) =>
-            i === indice ? { ...fila, [campo]: valor } : fila,
-        ),
-    );
+    const cambiarAntecedente = (
+        indice: number,
+        campo: keyof AntecedenteFila,
+        valor: string,
+    ) =>
+        setData(
+            'antecedentes_nuevos',
+            data.antecedentes_nuevos.map((fila, i) =>
+                i === indice ? { ...fila, [campo]: valor } : fila,
+            ),
+        );
 
-const agregarAlergia = () =>
-    setData('alergias_nuevas', [
-        ...data.alergias_nuevas,
-        { alergeno: '', gravedad: 'por_evaluar', reaccion: '' },
-    ]);
+    const agregarAlergia = () =>
+        setData('alergias_nuevas', [
+            ...data.alergias_nuevas,
+            { alergeno: '', gravedad: 'por_evaluar', reaccion: '' },
+        ]);
 
-const quitarAlergia = (indice: number) =>
-    setData(
-        'alergias_nuevas',
-        data.alergias_nuevas.filter((_, i) => i !== indice),
-    );
+    const quitarAlergia = (indice: number) =>
+        setData(
+            'alergias_nuevas',
+            data.alergias_nuevas.filter((_, i) => i !== indice),
+        );
 
-const cambiarAlergia = (
-    indice: number,
-    campo: keyof AlergiaFila,
-    valor: string,
-) =>
-    setData(
-        'alergias_nuevas',
-        data.alergias_nuevas.map((fila, i) =>
-            i === indice ? { ...fila, [campo]: valor } : fila,
-        ),
-    );
+    const cambiarAlergia = (
+        indice: number,
+        campo: keyof AlergiaFila,
+        valor: string,
+    ) =>
+        setData(
+            'alergias_nuevas',
+            data.alergias_nuevas.map((fila, i) =>
+                i === indice ? { ...fila, [campo]: valor } : fila,
+            ),
+        );
 
     const finalizar = (e: FormEvent) => {
         e.preventDefault();
@@ -541,8 +540,7 @@ const cambiarAlergia = (
 
                                 {ultimaConsulta === null ? (
                                     <p className="text-sm text-slate-500">
-                                        Es la primera consulta de este
-                                        paciente.
+                                        Es la primera consulta de este paciente.
                                     </p>
                                 ) : (
                                     <>
@@ -583,258 +581,289 @@ const cambiarAlergia = (
                 </div>
 
                 <section className="flex flex-col gap-4">
-    <div>
-        <h2 className="text-xl font-semibold text-slate-900">
-            Antecedentes y alergias
-        </h2>
-        <p className="text-sm text-slate-500">
-            Gestión clínica del paciente atendido. Lo que añadas se guarda al
-            finalizar la consulta.
-        </p>
-    </div>
-
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* ANTECEDENTES */}
-
-        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <CardContent className="flex flex-col gap-4 p-6">
-                <h3 className="text-lg font-bold text-slate-900">
-                    Antecedentes
-                </h3>
-
-                {antecedentes.length === 0 ? (
-                    <p className="text-sm text-slate-500">
-                        Sin antecedentes registrados.
-                    </p>
-                ) : (
-                    <ul className="flex flex-col gap-3">
-                        {antecedentes.map((antecedente) => (
-                            <li key={antecedente.id} className="text-sm">
-                                <p className="font-semibold text-slate-800 capitalize">
-                                    {antecedente.tipo}
-                                    {antecedente.fecha &&
-                                        ` · ${antecedente.fecha}`}
-                                </p>
-                                <p className="text-slate-500">
-                                    {antecedente.descripcion}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-
-                {data.antecedentes_nuevos.map((fila, i) => (
-                    <div
-                        key={i}
-                        className="flex flex-col gap-3 rounded-xl border border-teal-100 bg-teal-50/40 p-4"
-                    >
-                        <div className="grid grid-cols-[1fr_1fr_auto] items-start gap-3">
-                            <Etiqueta
-                                texto="Tipo"
-                                error={error(`antecedentes_nuevos.${i}.tipo`)}
-                            >
-                                <select
-                                    value={fila.tipo}
-                                    onChange={(e) =>
-                                        cambiarAntecedente(
-                                            i,
-                                            'tipo',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className={estiloCampo}
-                                >
-                                    {TIPOS_ANTECEDENTE.map((tipo) => (
-                                        <option
-                                            key={tipo.valor}
-                                            value={tipo.valor}
-                                        >
-                                            {tipo.texto}
-                                        </option>
-                                    ))}
-                                </select>
-                            </Etiqueta>
-
-                            <Etiqueta
-                                texto="Fecha"
-                                error={error(`antecedentes_nuevos.${i}.fecha`)}
-                            >
-                                <input
-                                    type="date"
-                                    value={fila.fecha}
-                                    onChange={(e) =>
-                                        cambiarAntecedente(
-                                            i,
-                                            'fecha',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className={estiloCampo}
-                                />
-                            </Etiqueta>
-
-                            <button
-                                type="button"
-                                onClick={() => quitarAntecedente(i)}
-                                aria-label="Quitar antecedente"
-                                className="mt-6 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 hover:bg-slate-50"
-                            >
-                                ✕
-                            </button>
-                        </div>
-
-                        <Etiqueta
-                            texto="Descripción"
-                            error={error(
-                                `antecedentes_nuevos.${i}.descripcion`,
-                            )}
-                        >
-                            <textarea
-                                rows={2}
-                                value={fila.descripcion}
-                                onChange={(e) =>
-                                    cambiarAntecedente(
-                                        i,
-                                        'descripcion',
-                                        e.target.value,
-                                    )
-                                }
-                                placeholder="Describir nuevo antecedente..."
-                                className={estiloCampo}
-                            />
-                        </Etiqueta>
+                    <div>
+                        <h2 className="text-xl font-semibold text-slate-900">
+                            Antecedentes y alergias
+                        </h2>
+                        <p className="text-sm text-slate-500">
+                            Gestión clínica del paciente atendido. Lo que añadas
+                            se guarda al finalizar la consulta.
+                        </p>
                     </div>
-                ))}
 
-                <button
-                    type="button"
-                    onClick={agregarAntecedente}
-                    className="w-fit rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
-                >
-                    + Añadir antecedente
-                </button>
-            </CardContent>
-        </Card>
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                        {/* ANTECEDENTES */}
 
-        {/* ALERGIAS */}
+                        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                            <CardContent className="flex flex-col gap-4 p-6">
+                                <h3 className="text-lg font-bold text-slate-900">
+                                    Antecedentes
+                                </h3>
 
-        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <CardContent className="flex flex-col gap-4 p-6">
-                <h3 className="text-lg font-bold text-slate-900">Alergias</h3>
+                                {antecedentes.length === 0 ? (
+                                    <p className="text-sm text-slate-500">
+                                        Sin antecedentes registrados.
+                                    </p>
+                                ) : (
+                                    <ul className="flex flex-col gap-3">
+                                        {antecedentes.map((antecedente) => (
+                                            <li
+                                                key={antecedente.id}
+                                                className="text-sm"
+                                            >
+                                                <p className="font-semibold text-slate-800 capitalize">
+                                                    {antecedente.tipo}
+                                                    {antecedente.fecha &&
+                                                        ` · ${antecedente.fecha}`}
+                                                </p>
+                                                <p className="text-slate-500">
+                                                    {antecedente.descripcion}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
 
-                {alergias.length === 0 ? (
-                    <p className="text-sm text-slate-500">
-                        Sin alergias registradas.
-                    </p>
-                ) : (
-                    <ul className="flex flex-col gap-3">
-                        {alergias.map((alergia) => (
-                            <li key={alergia.id} className="text-sm">
-                                <p className="font-semibold text-slate-800">
-                                    {alergia.alergeno}
-                                    {alergia.gravedad &&
-                                        ` · ${alergia.gravedad}`}
-                                </p>
-                                <p className="text-slate-500">
-                                    {alergia.reaccion ?? 'Sin reacción indicada'}
-                                </p>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+                                {data.antecedentes_nuevos.map((fila, i) => (
+                                    <div
+                                        key={i}
+                                        className="flex flex-col gap-3 rounded-xl border border-teal-100 bg-teal-50/40 p-4"
+                                    >
+                                        <div className="grid grid-cols-[1fr_1fr_auto] items-start gap-3">
+                                            <Etiqueta
+                                                texto="Tipo"
+                                                error={error(
+                                                    `antecedentes_nuevos.${i}.tipo`,
+                                                )}
+                                            >
+                                                <select
+                                                    value={fila.tipo}
+                                                    onChange={(e) =>
+                                                        cambiarAntecedente(
+                                                            i,
+                                                            'tipo',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className={estiloCampo}
+                                                >
+                                                    {TIPOS_ANTECEDENTE.map(
+                                                        (tipo) => (
+                                                            <option
+                                                                key={tipo.valor}
+                                                                value={
+                                                                    tipo.valor
+                                                                }
+                                                            >
+                                                                {tipo.texto}
+                                                            </option>
+                                                        ),
+                                                    )}
+                                                </select>
+                                            </Etiqueta>
 
-                {data.alergias_nuevas.map((fila, i) => (
-                    <div
-                        key={i}
-                        className="flex flex-col gap-3 rounded-xl border border-teal-100 bg-teal-50/40 p-4"
-                    >
-                        <div className="grid grid-cols-[1fr_1fr_auto] items-start gap-3">
-                            <Etiqueta
-                                texto="Alérgeno"
-                                error={error(`alergias_nuevas.${i}.alergeno`)}
-                            >
-                                <input
-                                    value={fila.alergeno}
-                                    onChange={(e) =>
-                                        cambiarAlergia(
-                                            i,
-                                            'alergeno',
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Nombre del alérgeno"
-                                    className={estiloCampo}
-                                />
-                            </Etiqueta>
+                                            <Etiqueta
+                                                texto="Fecha"
+                                                error={error(
+                                                    `antecedentes_nuevos.${i}.fecha`,
+                                                )}
+                                            >
+                                                <input
+                                                    type="date"
+                                                    value={fila.fecha}
+                                                    onChange={(e) =>
+                                                        cambiarAntecedente(
+                                                            i,
+                                                            'fecha',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className={estiloCampo}
+                                                />
+                                            </Etiqueta>
 
-                            <Etiqueta
-                                texto="Gravedad"
-                                error={error(`alergias_nuevas.${i}.gravedad`)}
-                            >
-                                <select
-                                    value={fila.gravedad}
-                                    onChange={(e) =>
-                                        cambiarAlergia(
-                                            i,
-                                            'gravedad',
-                                            e.target.value,
-                                        )
-                                    }
-                                    className={estiloCampo}
-                                >
-                                    {GRAVEDADES.map((gravedad) => (
-                                        <option
-                                            key={gravedad.valor}
-                                            value={gravedad.valor}
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    quitarAntecedente(i)
+                                                }
+                                                aria-label="Quitar antecedente"
+                                                className="mt-6 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 hover:bg-slate-50"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+
+                                        <Etiqueta
+                                            texto="Descripción"
+                                            error={error(
+                                                `antecedentes_nuevos.${i}.descripcion`,
+                                            )}
                                         >
-                                            {gravedad.texto}
-                                        </option>
-                                    ))}
-                                </select>
-                            </Etiqueta>
+                                            <textarea
+                                                rows={2}
+                                                value={fila.descripcion}
+                                                onChange={(e) =>
+                                                    cambiarAntecedente(
+                                                        i,
+                                                        'descripcion',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="Describir nuevo antecedente..."
+                                                className={estiloCampo}
+                                            />
+                                        </Etiqueta>
+                                    </div>
+                                ))}
 
-                            <button
-                                type="button"
-                                onClick={() => quitarAlergia(i)}
-                                aria-label="Quitar alergia"
-                                className="mt-6 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 hover:bg-slate-50"
-                            >
-                                ✕
-                            </button>
-                        </div>
+                                <button
+                                    type="button"
+                                    onClick={agregarAntecedente}
+                                    className="w-fit rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
+                                >
+                                    + Añadir antecedente
+                                </button>
+                            </CardContent>
+                        </Card>
 
-                        <Etiqueta
-                            texto="Reacción"
-                            error={error(`alergias_nuevas.${i}.reaccion`)}
-                        >
-                            <textarea
-                                rows={2}
-                                value={fila.reaccion}
-                                onChange={(e) =>
-                                    cambiarAlergia(
-                                        i,
-                                        'reaccion',
-                                        e.target.value,
-                                    )
-                                }
-                                placeholder="Describir reacción..."
-                                className={estiloCampo}
-                            />
-                        </Etiqueta>
+                        {/* ALERGIAS */}
+
+                        <Card className="rounded-2xl border border-slate-200 bg-white shadow-sm">
+                            <CardContent className="flex flex-col gap-4 p-6">
+                                <h3 className="text-lg font-bold text-slate-900">
+                                    Alergias
+                                </h3>
+
+                                {alergias.length === 0 ? (
+                                    <p className="text-sm text-slate-500">
+                                        Sin alergias registradas.
+                                    </p>
+                                ) : (
+                                    <ul className="flex flex-col gap-3">
+                                        {alergias.map((alergia) => (
+                                            <li
+                                                key={alergia.id}
+                                                className="text-sm"
+                                            >
+                                                <p className="font-semibold text-slate-800">
+                                                    {alergia.alergeno}
+                                                    {alergia.gravedad &&
+                                                        ` · ${alergia.gravedad}`}
+                                                </p>
+                                                <p className="text-slate-500">
+                                                    {alergia.reaccion ??
+                                                        'Sin reacción indicada'}
+                                                </p>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+
+                                {data.alergias_nuevas.map((fila, i) => (
+                                    <div
+                                        key={i}
+                                        className="flex flex-col gap-3 rounded-xl border border-teal-100 bg-teal-50/40 p-4"
+                                    >
+                                        <div className="grid grid-cols-[1fr_1fr_auto] items-start gap-3">
+                                            <Etiqueta
+                                                texto="Alérgeno"
+                                                error={error(
+                                                    `alergias_nuevas.${i}.alergeno`,
+                                                )}
+                                            >
+                                                <input
+                                                    value={fila.alergeno}
+                                                    onChange={(e) =>
+                                                        cambiarAlergia(
+                                                            i,
+                                                            'alergeno',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    placeholder="Nombre del alérgeno"
+                                                    className={estiloCampo}
+                                                />
+                                            </Etiqueta>
+
+                                            <Etiqueta
+                                                texto="Gravedad"
+                                                error={error(
+                                                    `alergias_nuevas.${i}.gravedad`,
+                                                )}
+                                            >
+                                                <select
+                                                    value={fila.gravedad}
+                                                    onChange={(e) =>
+                                                        cambiarAlergia(
+                                                            i,
+                                                            'gravedad',
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className={estiloCampo}
+                                                >
+                                                    {GRAVEDADES.map(
+                                                        (gravedad) => (
+                                                            <option
+                                                                key={
+                                                                    gravedad.valor
+                                                                }
+                                                                value={
+                                                                    gravedad.valor
+                                                                }
+                                                            >
+                                                                {gravedad.texto}
+                                                            </option>
+                                                        ),
+                                                    )}
+                                                </select>
+                                            </Etiqueta>
+
+                                            <button
+                                                type="button"
+                                                onClick={() => quitarAlergia(i)}
+                                                aria-label="Quitar alergia"
+                                                className="mt-6 rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 hover:bg-slate-50"
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+
+                                        <Etiqueta
+                                            texto="Reacción"
+                                            error={error(
+                                                `alergias_nuevas.${i}.reaccion`,
+                                            )}
+                                        >
+                                            <textarea
+                                                rows={2}
+                                                value={fila.reaccion}
+                                                onChange={(e) =>
+                                                    cambiarAlergia(
+                                                        i,
+                                                        'reaccion',
+                                                        e.target.value,
+                                                    )
+                                                }
+                                                placeholder="Describir reacción..."
+                                                className={estiloCampo}
+                                            />
+                                        </Etiqueta>
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    onClick={agregarAlergia}
+                                    className="w-fit rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
+                                >
+                                    + Añadir alergia
+                                </button>
+                            </CardContent>
+                        </Card>
                     </div>
-                ))}
-
-                <button
-                    type="button"
-                    onClick={agregarAlergia}
-                    className="w-fit rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
-                >
-                    + Añadir alergia
-                </button>
-            </CardContent>
-        </Card>
-    </div>
-</section>
+                </section>
 
                 {/* BARRA INFERIOR */}
 

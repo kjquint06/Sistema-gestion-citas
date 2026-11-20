@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Cita;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -17,7 +18,10 @@ class GuardarConsultaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->route('cita')->medico_id === $this->user()->medico?->id;
+        $cita = $this->route('cita');
+
+        return $cita instanceof Cita
+            && $cita->medico_id === $this->user()->medico?->id;
     }
 
     /**

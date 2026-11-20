@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Paciente\MiExpedienteController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\ConsultaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
