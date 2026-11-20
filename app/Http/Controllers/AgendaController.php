@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Medico\AgendaSemanalController;
 use App\Models\Cita;
 use App\Models\Horario;
 use App\Models\Medico;
@@ -21,6 +22,14 @@ class AgendaController extends Controller
     {
         /** @var User $usuario */
         $usuario = $request->user();
+
+        // El médico ve su agenda semanal (issue #43); los demás, la vista por día
+        if ($usuario->rol === User::ROL_MEDICO) {
+            return Inertia::render(
+                'medico/agenda',
+                app(AgendaSemanalController::class)->datos($request)
+            );
+        }
 
         $esPersonal = $usuario->tieneRol(User::ROL_ADMIN, User::ROL_RECEPCIONISTA);
         $esMedico = $usuario->tieneRol(User::ROL_MEDICO);
