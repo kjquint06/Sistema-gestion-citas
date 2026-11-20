@@ -1,7 +1,8 @@
-import { Head,router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import { index as consultas, iniciar, show } from '@/routes/consultas';
 
 import { Card, CardContent } from '@/components/ui/card';
-import { index as consultas, iniciar } from '@/routes/consultas';
+
 
 type CitaHoy = {
     id: number;
@@ -83,14 +84,29 @@ export default function ConsultasIndex({ citasHoy }: Props) {
                                                 cita.estado}
                                         </span>
 
-                                        <button
-                                                type="button"
-                                                disabled={!ESTADOS_INICIABLES.includes(cita.estado)}
-                                                onClick={() => router.patch(iniciar.url(cita.id))}
-                                                className="rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition enabled:hover:bg-[#0d655e] disabled:cursor-not-allowed disabled:bg-slate-300"
+                                        {cita.estado === 'en_consulta' ? (
+                                            <Link
+                                            href={show(cita.id)}
+                                            className="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
                                             >
-                                                Iniciar consulta
-                                        </button>
+                                                Continuar consulta
+                                                
+                                            </Link>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    disabled={cita.estado !== 'en_espera'}
+                                                    title={
+                                                        cita.estado !== 'en_espera'
+                                                        ? 'Disponible cuando el paciente esté en espera'
+                                                        : undefined
+                                                    }
+                                                    onClick={() => router.patch(iniciar.url(cita.id))}
+                                                    className="rounded-xl bg-[#0f766e] px-4 py-2 text-sm font-medium text-white transition enabled:hover:bg-[#0d655e] disabled:cursor-not-allowed disabled:bg-slate-300"
+                                                    >
+                                                        Iniciar consulta
+                                                </button>
+                                            )}
                                     </li>
                                 ))}
                             </ul>

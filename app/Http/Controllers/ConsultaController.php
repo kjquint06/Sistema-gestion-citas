@@ -12,6 +12,9 @@ use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\GuardarConsultaRequest;
 
 class ConsultaController extends Controller
 {
@@ -44,6 +47,7 @@ class ConsultaController extends Controller
     {
         $this->autorizarMedico($request, $cita);
 
+        
         $iniciables = [
             Cita::ESTADO_PENDIENTE,
             Cita::ESTADO_CONFIRMADA,
@@ -51,18 +55,24 @@ class ConsultaController extends Controller
             Cita::ESTADO_EN_CONSULTA,
         ];
 
-        if (! in_array($cita->estado, $iniciables, true)) {
-            return back()->withErrors(['estado' => 'Esta cita ya no se puede iniciar.']);
+        if ($cita->estado !== Cita::ESTADO_EN_ESPERA) {
+            return back()->withErrors([
+                'estado' => 'Solo se puede iniciar una cita cuyo paciente esté en espera.',
+            ]);
         }
-
         $cita->update(['estado' => Cita::ESTADO_EN_CONSULTA]);
 
         return to_route('consultas.show', $cita);
     }
 
-    public function show(Request $request, Cita $cita): Response
+    public function show(Request $request, Cita $cita): Response|RedirectResponse
     {
         $this->autorizarMedico($request, $cita);
+        
+        if ($cita->estado !== Cita::ESTADO_EN_CONSULTA) {
+            return to_route('consultas.index');
+        }
+
 
         $cita->load(
             'paciente.usuario',
@@ -123,5 +133,29 @@ class ConsultaController extends Controller
     private function autorizarMedico(Request $request, Cita $cita): void
     {
         abort_if($cita->medico_id !== $request->user()->medico?->id, 403);
+    }
+
+    public function guardar(GuardarConsultaRequest $request, Cita $cita): RedirectResponse
+    {
+        if ($cita->estado !== Cita::ESTADO_EN_CONSULTA) {
+            return back()->withErrors(['estado' => 'Primero debes iniciar la consulta.']);
+        }
+
+        $datos = $request->validated();
+
+        DB::transaction(function () use ($cita, $datos) {
+            $consulta = $cita->consulta()->create(
+                Arr::only($datos, ['sintomas', 'diagnostico', 'notas', 'signos_vitales'])
+            );
+
+            $consulta->recetas()->createMany($datos['recetas'] ?? []);
+
+            $cita->paciente->antecedentes()->createMany($datos['antecedentes_nuevos'] ?? []);
+            $cita->paciente->alergias()->createMany($datos['alergias_nuevas'] ?? []);
+
+            $cita->update(['estado' => Cita::ESTADO_ATENDIDA]);
+        });
+
+        return to_route('consultas.index');
     }
 }
