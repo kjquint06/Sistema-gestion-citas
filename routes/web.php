@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\HorarioController;
+use App\Http\Controllers\Medico\ExpedienteMedicoController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\Paciente\MiExpedienteController;
 use App\Http\Controllers\PacienteController;
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('rol:'.User::ROL_MEDICO)->group(function () {
         Route::inertia('consultas', 'consultas/index')->name('consultas.index');
         Route::inertia('mis-pacientes', 'mis-pacientes/index')->name('mis-pacientes.index');
+        Route::get('medico/expedientes/{paciente}', [ExpedienteMedicoController::class, 'show'])->name('expediente-medico.show');
     });
 
     // Pacientes: personal de la clínica
