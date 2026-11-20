@@ -74,7 +74,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware('rol:'.User::ROL_MEDICO.','.User::ROL_ADMIN)->group(function () {
         Route::get('disponibilidad', [MedicoController::class, 'disponibilidad'])->name('disponibilidad.index');
     });
-
+    // Citas en la agenda: recepción y administrador
+    Route::middleware('rol:'.User::ROL_RECEPCIONISTA.','.User::ROL_ADMIN)->group(function () {
+        Route::get('citas/{cita}/edit', [CitaController::class, 'edit'])->name('citas.edit');
+        Route::put('citas/{cita}', [CitaController::class, 'update'])->name('citas.update');
+        Route::patch('citas/{cita}/confirmar', [CitaController::class, 'confirmar'])->name('citas.confirmar');
+        Route::patch('citas/{cita}/llegada', [CitaController::class, 'registrarLlegada'])->name('citas.llegada');
+    });
     // Médicos, especialidades, horarios y citas: solo administrador
     Route::middleware('rol:'.User::ROL_ADMIN)->group(function () {
         Route::resource('medicos', MedicoController::class)
@@ -90,7 +96,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // El listado de citas es la agenda (agenda.index)
         Route::resource('citas', CitaController::class)
             ->parameters(['citas' => 'cita'])
-            ->except(['index', 'show']);
+            ->except(['index', 'show', 'edit', 'update']);
         Route::patch('citas/{cita}/cancelar', [CitaController::class, 'cancelar'])->name('citas.cancelar');
     });
 

@@ -99,6 +99,45 @@ class CitaController extends Controller
         return back();
     }
 
+    /**
+     * Recepción confirma una cita pendiente.
+     */
+    public function confirmar(Cita $cita): RedirectResponse
+    {
+        if ($cita->estado !== Cita::ESTADO_PENDIENTE) {
+            return back()->withErrors(['confirmar' => 'Solo se pueden confirmar citas pendientes.']);
+        }
+
+        $cita->update(['estado' => Cita::ESTADO_CONFIRMADA]);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Cita confirmada correctamente.']);
+
+        return back();
+    }
+
+    /**
+     * Recepción registra que el paciente llegó: la cita queda En espera.
+     */
+    public function registrarLlegada(Cita $cita): RedirectResponse
+    {
+        if (! in_array($cita->estado, [Cita::ESTADO_PENDIENTE, Cita::ESTADO_CONFIRMADA], true)) {
+            return back()->withErrors(['llegada' => 'Solo se registra la llegada de citas pendientes o confirmadas.']);
+        }
+
+        if (! $cita->inicia_en->isToday()) {
+            return back()->withErrors(['llegada' => 'Solo se puede registrar la llegada de citas de hoy.']);
+        }
+
+        $cita->update([
+            'estado' => Cita::ESTADO_EN_ESPERA,
+            'hora_llegada' => now(),
+        ]);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Llegada registrada: el paciente está en espera.']);
+
+        return back();
+    }
+
     public function destroy(Cita $cita): RedirectResponse
     {
         if ($cita->consulta()->exists()) {
