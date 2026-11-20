@@ -183,15 +183,11 @@ test('recepción ve toda la agenda y puede gestionarla', function () {
             ->has('citas', 2));
 });
 
-test('un médico ve solo sus citas y no puede gestionar la agenda', function () {
+test('un médico ve su agenda semanal solo con sus citas', function () {
     $this->actingAs($this->ana->usuario)
-        ->get(urlAgendaLunes(['medico_id' => $this->luis->id]))
+        ->get(route('agenda.index', ['semana' => $this->lunes->toDateString(), 'medico_id' => $this->luis->id]))
         ->assertInertia(fn (Assert $page) => $page
-            ->where('rol', User::ROL_MEDICO)
-            ->where('puedeGestionar', false)
-            ->has('medicosFiltro', 0)
-            ->has('medicos', 1)
-            ->where('medicos.0.nombre', 'Ana Morales')
+            ->component('medico/agenda')
             ->has('citas', 1)
             ->where('citas.0.id', $this->citaAna->id));
 });

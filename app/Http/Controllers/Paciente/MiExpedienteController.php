@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Alergia;
 use App\Models\Antecedente;
 use App\Models\Consulta;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,10 +15,22 @@ class MiExpedienteController extends Controller
 {
     public function index(Request $request): Response
     {
-        $usuario = $request->user();
-        $paciente = $usuario->paciente;
+        $paciente = $request->user()->paciente;
 
         abort_unless($paciente !== null, 403);
+
+        return Inertia::render('pacientes/mi-expediente', $this->datosExpediente($paciente));
+    }
+
+    /**
+     * Datos del expediente de un paciente (solo lectura). Lo usan el paciente
+     * en "Mi expediente" y el médico en expediente-medico.show.
+     *
+     * @return array<string, mixed>
+     */
+    public function datosExpediente(Paciente $paciente): array
+    {
+        $usuario = $paciente->usuario;
 
         $consultas = $paciente->consultas()
             ->with(['cita.medico.usuario', 'cita.medico.especialidad', 'recetas'])
@@ -43,7 +56,7 @@ class MiExpedienteController extends Controller
             ])
             ->values();
 
-        return Inertia::render('pacientes/mi-expediente', [
+        return [
             'paciente' => [
                 'id' => $paciente->id,
                 'nombre' => $usuario->name,
@@ -77,6 +90,6 @@ class MiExpedienteController extends Controller
                 ])
                 ->values(),
             'consultas' => $consultas,
-        ]);
+        ];
     }
 }

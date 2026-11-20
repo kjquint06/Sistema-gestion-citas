@@ -60,6 +60,7 @@ type Props = {
     alergias: Alergia[];
     antecedentes: Antecedente[];
     consultas: Consulta[];
+    encabezado?: { titulo: string; descripcion: string };
 };
 
 type IdPestana =
@@ -118,6 +119,7 @@ export default function MiExpediente({
     alergias,
     antecedentes,
     consultas,
+    encabezado,
 }: Props) {
     const [activa, setActiva] = useState<IdPestana>('datos');
     const [consultaId, setConsultaId] = useState<number | null>(
@@ -181,18 +183,18 @@ export default function MiExpediente({
 
     return (
         <>
-            <Head title="Mi expediente" />
+            <Head title={encabezado?.titulo ?? 'Mi expediente'} />
 
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-5 p-4">
                 {/* Encabezado */}
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-semibold">
-                            Mi expediente
+                            {encabezado?.titulo ?? 'Mi expediente'}
                         </h1>
                         <p className="text-sm text-muted-foreground">
-                            Tu información clínica en un solo lugar · Acceso
-                            exclusivo a tu propio expediente.
+                            {encabezado?.descripcion ??
+                                'Tu información clínica en un solo lugar · Acceso exclusivo a tu propio expediente.'}
                         </p>
                     </div>
                     <Badge variant="outline">Solo lectura</Badge>
