@@ -11,6 +11,7 @@ use App\Http\Controllers\Paciente\MiExpedienteController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\ConsultaController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +48,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Espacio del médico: solo el médico (rutas base, otros issues las completan)
     Route::middleware('rol:'.User::ROL_MEDICO)->group(function () {
-        Route::inertia('consultas', 'consultas/index')->name('consultas.index');
+        Route::get('consultas', [ConsultaController::class, 'index'])->name('consultas.index');
+        Route::get('consultas/{cita}', [ConsultaController::class, 'show'])->name('consultas.show');
+        Route::patch('consultas/{cita}/iniciar', [ConsultaController::class, 'iniciar'])->name('consultas.iniciar');
+        Route::post('consultas/{cita}', [ConsultaController::class, 'guardar'])->name('consultas.guardar');
         Route::inertia('mis-pacientes', 'mis-pacientes/index')->name('mis-pacientes.index');
     });
 
