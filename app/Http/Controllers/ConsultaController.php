@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Cita;
 use App\Models\Alergia;
 use App\Models\Antecedente;
+use App\Models\Paciente;
+use App\Models\Medico;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
+use App\Models\User;
 use Inertia\Inertia;
 
 class ConsultaController extends Controller
@@ -59,20 +64,41 @@ class ConsultaController extends Controller
     {
         $this->autorizarMedico($request, $cita);
 
-        $cita->load('paciente.usuario', 'paciente.alergias', 'paciente.antecedentes');
+        $cita->load(
+            'paciente.usuario',
+            'paciente.alergias',
+            'paciente.antecedentes',
+            'medico.usuario',
+            'medico.especialidad',
+        );
+
+        $ultimaConsulta = $cita->paciente->consultas()
+            ->where('consultas.cita_id', '!=', $cita->id)
+            ->with('cita')
+            ->latest('consultas.created_at')
+            ->first();
 
         return Inertia::render('consultas/show', [
             'cita' => [
                 'id' => $cita->id,
                 'estado' => $cita->estado,
                 'motivo' => $cita->motivo,
-                'hora' => $cita->inicia_en->format('H:i'),
+                'fecha' => $cita->inicia_en->format('d/m/Y'),
+                'inicia' => $cita->inicia_en->format('H:i'),
+                'termina' => $cita->termina_en->format('H:i'),
+                'hora_llegada' => $cita->hora_llegada?->format('H:i'),
             ],
             'paciente' => [
                 'id' => $cita->paciente->id,
                 'nombre' => $cita->paciente->usuario->name,
                 'edad' => $cita->paciente->fecha_nacimiento?->age,
                 'sexo' => $cita->paciente->sexo,
+            ],
+            'medico' => [
+                'nombre' => $cita->medico->usuario->name,
+                'especialidad' => $cita->medico->especialidad?->nombre,
+                'consultorio' => $cita->medico->consultorio,
+                'duracion' => $cita->medico->duracion_cita,
             ],
             'alergias' => $cita->paciente->alergias->map(fn (Alergia $alergia) => [
                 'id' => $alergia->id,
@@ -86,6 +112,11 @@ class ConsultaController extends Controller
                 'descripcion' => $antecedente->descripcion,
                 'fecha' => $antecedente->fecha?->format('d/m/Y'),
             ]),
+            'ultimaConsulta' => $ultimaConsulta === null ? null : [
+                'fecha' => $ultimaConsulta->cita->inicia_en->format('d/m/Y'),
+                'diagnostico' => $ultimaConsulta->diagnostico,
+                'signos_vitales' => $ultimaConsulta->signos_vitales,
+            ],
         ]);
     }
 
