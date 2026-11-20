@@ -1,12 +1,20 @@
-import { Link } from '@inertiajs/react';
-import { CalendarClock, FileText, Pencil } from 'lucide-react';
+import { Form, Link } from '@inertiajs/react';
+import {
+    CalendarClock,
+    CheckCircle2,
+    FileText,
+    LogIn,
+    Pencil,
+} from 'lucide-react';
 import CitaController from '@/actions/App/Http/Controllers/CitaController';
 import { aFecha, ESTADOS, mayuscula } from '@/components/agenda-utils';
 import type { CitaAgenda } from '@/components/agenda-utils';
 import ConfirmarEliminar from '@/components/confirmar-eliminar';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { edit } from '@/routes/citas';
 import { show } from '@/routes/expedientes';
+import { show as fichaPaciente } from '@/routes/pacientes';
 
 function Fila({ etiqueta, valor }: { etiqueta: string; valor: string }) {
     return (
@@ -39,11 +47,30 @@ export default function DetalleCita({
     rol: string;
     puedeGestionar: boolean;
 }) {
+    const esAdmin = rol === 'admin';
+    const esRecepcion = rol === 'recepcionista';
+    const esHoy = cita.fecha === new Date().toLocaleDateString('en-CA');
+
+    // Cancelar y editar son exclusivos del administrador
     const puedeCancelar =
+        esAdmin && cita.estado !== 'cancelada' && cita.estado !== 'atendida';
+    const puedeVerFicha = esAdmin || esRecepcion || rol === 'medico';
+
+    // Acciones de recepción (el administrador también puede hacerlas)
+    const puedeConfirmar = puedeGestionar && cita.estado === 'pendiente';
+    const puedeRegistrarLlegada =
         puedeGestionar &&
-        cita.estado !== 'cancelada' &&
-        cita.estado !== 'atendida';
-    const puedeVerFicha = rol === 'admin' || rol === 'medico';
+        esHoy &&
+        (cita.estado === 'pendiente' || cita.estado === 'confirmada');
+    const puedeReprogramar =
+        puedeGestionar &&
+        (cita.estado === 'pendiente' || cita.estado === 'confirmada');
+
+    // Recepción abre la ficha administrativa (módulo Pacientes);
+    // admin y médico abren el expediente clínico, como antes.
+    const enlaceFicha = esRecepcion
+        ? fichaPaciente(cita.paciente.id)
+        : show(cita.paciente.id);
     const fechaTexto = aFecha(cita.fecha);
 
     return (
@@ -101,30 +128,69 @@ export default function DetalleCita({
             </div>
 
             <div className="flex flex-wrap gap-2">
-                {puedeVerFicha && (
+                {puedeRegistrarLlegada && (
+                    <Form
+                        {...CitaController.registrarLlegada.form(cita.id)}
+                        options={{ preserveScroll: true }}
+                    >
+                        {({ processing, errors }) => (
+                            <>
+                                <Button size="sm" disabled={processing}>
+                                    <LogIn size={14} />
+                                    Registrar llegada
+                                </Button>
+                                <InputError message={errors.llegada} />
+                            </>
+                        )}
+                    </Form>
+                )}
+
+                {puedeConfirmar && (
+                    <Form
+                        {...CitaController.confirmar.form(cita.id)}
+                        options={{ preserveScroll: true }}
+                    >
+                        {({ processing, errors }) => (
+                            <>
+                                <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    disabled={processing}
+                                >
+                                    <CheckCircle2 size={14} />
+                                    Confirmar
+                                </Button>
+                                <InputError message={errors.confirmar} />
+                            </>
+                        )}
+                    </Form>
+                )}
+
+                {puedeReprogramar && (
                     <Button variant="secondary" size="sm" asChild>
-                        <Link href={show(cita.paciente.id)}>
-                            <FileText size={14} />
-                            Abrir ficha administrativa
+                        <Link href={edit(cita.id)}>
+                            <CalendarClock size={14} />
+                            Reprogramar
                         </Link>
                     </Button>
                 )}
 
-                {puedeGestionar && (
-                    <>
-                        <Button size="sm" asChild>
-                            <Link href={edit(cita.id)}>
-                                <CalendarClock size={14} />
-                                Reprogramar
-                            </Link>
-                        </Button>
-                        <Button variant="secondary" size="sm" asChild>
-                            <Link href={edit(cita.id)}>
-                                <Pencil size={14} />
-                                Editar
-                            </Link>
-                        </Button>
-                    </>
+                {esAdmin && puedeGestionar && (
+                    <Button variant="secondary" size="sm" asChild>
+                        <Link href={edit(cita.id)}>
+                            <Pencil size={14} />
+                            Editar
+                        </Link>
+                    </Button>
+                )}
+
+                {puedeVerFicha && (
+                    <Button variant="outline" size="sm" asChild>
+                        <Link href={enlaceFicha}>
+                            <FileText size={14} />
+                            Abrir ficha administrativa
+                        </Link>
+                    </Button>
                 )}
 
                 {puedeCancelar && (
